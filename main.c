@@ -105,17 +105,17 @@ void f_mem_dump(adr start, word n) {
     fclose(f);
 }
 
-void test_mem() {
-    byte b0, b1;
-    word w;
-    w = 0x0d0c;
-    w_write(4, w);
-    b0 = b_read(4);
-    b1 = b_read(5);
-    printf("%04x = %02x%02x\n", w, b1, b0);
-    assert(b0 == 0x0c);
-    assert(b1 == 0x0d);
-}
+//void test_mem() {
+//    byte b0, b1;
+//    word w;
+//    w = 0x0d0c;
+//    w_write(4, w);
+//    b0 = b_read(4);
+//    b1 = b_read(5);
+//    printf("%04x = %02x%02x\n", w, b1, b0);
+//    assert(b0 == 0x0c);
+//    assert(b1 == 0x0d);
+//}
 
 int main() {
     int k = 0;
