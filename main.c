@@ -12,7 +12,8 @@ byte b_read(adr a);         // читает из "старой памяти" mem
 void b_write(adr a, byte val); // пишет значение val в "старую память" mem в байт с "адресом" a.
 word w_read(adr a);        // читает из "старой памяти" mem слово с "адресом" a.
 void w_write(adr a, word val); // пишет значение val в "старую память" mem в слово с "адресом" a.
-void load_file();
+int load_file();
+int f_load_file();
 void mem_dump(adr start, word n);
 
 //typedef union ob {
@@ -50,21 +51,42 @@ word w_read(adr a) {
 }
 
 void w_write(adr a, word val) {
-    mem[a] = (word) val;
-    mem[a + 1] = (word) (val >> 8);
+    mem[a] = (byte) val;
+    mem[a + 1] = (byte) (val >> 8);
 }
 
-void load_file() {
+int load_file() {
     adr ad; // адрес, на который пишем
     unsigned int n; // число байтов в вводимом блоке
     int i;
+    int k = 0;
     unsigned short int x;
     while (scanf("%hx%xu", &ad, &n) == 2) {
         for (i = 0; i < n; i++) {
             scanf("%hxu", &x);
-            mem[ad + i] = x;
+            mem[ad + i] = (byte) x;
+            k++;
         }
     }
+    return k;
+}
+
+int f_load_file() {
+    adr ad; // адрес, на который пишем
+    unsigned int n; // число байтов в вводимом блоке
+    int i;
+    int k = 0; // счётчик записанных байтов
+    unsigned short int x;
+    FILE *f = fopen("load.txt", "r");
+    while (fscanf(f, "%hx%x", &ad, &n) == 2) {
+        for (i = 0; i < n; i++) {
+            fscanf(f, "%hx", &x); // считали
+            mem[ad + i] = (byte) x; // записали
+            k++; // ну тут понятно
+        }
+    }
+    fclose(f);
+    return k;
 }
 
 void mem_dump(adr start, word n) {
@@ -72,6 +94,15 @@ void mem_dump(adr start, word n) {
     for (i = 0; i < n; i += 2) {
         printf("%06o : %06o\n", (start + i), w_read(start + i));
     }
+}
+
+void f_mem_dump(adr start, word n) {
+    unsigned int i;
+    FILE * f = fopen("load1.txt", "w");
+    for (i = 0; i < n; i += 2) {
+        fprintf(f, "%06o : %06o\n", (start + i), w_read(start + i));
+    }
+    fclose(f);
 }
 
 void test_mem() {
@@ -87,7 +118,8 @@ void test_mem() {
 }
 
 int main() {
-    load_file();
-    mem_dump(0x40, 4);
+    int k = 0;
+    k = f_load_file();
+    f_mem_dump(0x40, (word) k);
     return 0;
 }
