@@ -1,0 +1,32 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+R:/progi/pdp_emulator/functions.c
+stdio.h
+-
+stdlib.h
+-
+assert.h
+-
+variables.h
+R:/progi/pdp_emulator/variables.h
+
+R:/progi/pdp_emulator/main.c
+stdio.h
+-
+stdlib.h
+-
+assert.h
+-
+variables.h
+R:/progi/pdp_emulator/variables.h
+
+R:/progi/pdp_emulator/rubbish.c
+
+R:/progi/pdp_emulator/variables.h
+

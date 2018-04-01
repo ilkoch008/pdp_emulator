@@ -1,0 +1,3 @@
+R:/progi/pdp_emulator/cmake-build-debug/CMakeFiles/test_3.dir
+R:/progi/pdp_emulator/cmake-build-debug/CMakeFiles/edit_cache.dir
+R:/progi/pdp_emulator/cmake-build-debug/CMakeFiles/rebuild_cache.dir

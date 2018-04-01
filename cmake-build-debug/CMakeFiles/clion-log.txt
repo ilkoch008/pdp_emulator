@@ -1,0 +1,4 @@
+"C:\CLion 181.4203.106\bin\cmake\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" R:\progi\pdp_emulator
+-- Configuring done
+-- Generating done
+-- Build files have been written to: R:/progi/pdp_emulator/cmake-build-debug

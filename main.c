@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <string.h>
 #include "variables.h"
+
+
 
 byte b_read(adr a);         // читает из "старой памяти" mem байт с "адресом" a.
 void b_write(adr a, byte val); // пишет значение val в "старую память" mem в байт с "адресом" a.
@@ -13,21 +16,16 @@ void mem_dump(adr start, word n);
 void f_mem_dump(adr start, word n);
 int take_mnem(word comm);
 void do_command(word comm);
+command take_com(word x);
 
 int main(int argc, char **argv) {
-    //printf("%s\n%s", argv[0], argv[1]);
+
     adr_n *an = f_load_file();
-    //printf("%d\n", an->ad);
     f_mem_dump(an->ad, (word) an->n);
-    for (R[7] = an->ad; R[7] < an->ad + an->n; R[7] += 2) {
-        do_command(w_read(R[7]));
+    for (reg[7] = an->ad; reg[7] < an->ad + an->n; reg[7] += 2) {
+        do_command(w_read(reg[7]));
     }
     free(an);
     return 0;
 }
-
-
-
-
-
 
