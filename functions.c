@@ -8,6 +8,17 @@
 #include <string.h>
 #include "variables.h"
 
+void f_mem_dump(adr start, word n, char* s);
+void f_mem_dump_1(adr start, word n, char* s);
+
+void print_all() {
+    fprintf(f, "\n------------ print all ------------\n");
+    fprintf(f, "r0=%06o r2=%06o r4=%06o sp=%06o\n", reg[0], reg[2], reg[4], reg[6]);
+    fprintf(f, "r1=%06o r3=%06o r5=%06o pc=%06o\n", reg[1], reg[3], reg[5], reg[7]);
+    fprintf(f, "N=%06o  Z=%06o  V=%06o  C=%06o\n", N, Z, V, C);
+    fprintf(f, "-----------------------------------\n");
+}
+
 byte b_read(adr a) {
     return mem[a];
 }
@@ -44,7 +55,7 @@ int load_file() {
     return k;
 }
 
-adr_n *f_load_file() { // ЧИТАЕМ ПОКА ПО ОДНОЙ ПРОГЕ!!!
+adr_n * f_load_file() { // ЧИТАЕМ ПОКА ПО ОДНОЙ ПРОГЕ!!!
     adr ad; // адрес, на который пишем
     adr_n *ret = malloc(sizeof(adr_n)); // инфа о том, сколько и куда записали
     ret->ad = 0;
@@ -53,39 +64,49 @@ adr_n *f_load_file() { // ЧИТАЕМ ПОКА ПО ОДНОЙ ПРОГЕ!!!
     int i;
     //unsigned int k = 0; // счётчик записанных байтов
     unsigned short int x;
-    FILE *f = fopen("load.txt", "r");
-    while (fscanf(f, "%hx%x", &ret->ad, &ret->n) == 2) {
+    FILE *fi = fopen("load.txt", "r");
+    while (fscanf(fi, "%hx%x", &ret->ad, &ret->n) == 2) {
         //printf("%hx\n", ret->ad);
         for (i = 0; i < ret->n; i++) {
-            fscanf(f, "%hx", &x); // считали
+            fscanf(fi, "%hx", &x); // считали
             mem[ret->ad + i] = (byte) x; // записали
             //k++; // ну тут понятно
         }
+       // f_mem_dump_1(ret->ad, (word) ret->n, "load_out_1.txt");
     }
-    fclose(f);
+    fclose(fi);
     return ret;
 }
 
 void mem_dump(adr start, word n) {
     unsigned int i;
     for (i = 0; i < n; i += 2) {
-        printf("%06o : %06o\n", (start + i), w_read(start + i));
+        printf("%06o : %06o = %016i\n", ((adr)(start + i)), w_read((adr)(start + i)), w_read((adr)(start + i)));
     }
 }
 
-void f_mem_dump(adr start, word n) {
+void f_mem_dump(adr start, word n, char* s) {
     unsigned int i;
-    FILE *f = fopen("load_out.txt", "w");
+    FILE *fil = fopen(s, "w");
     for (i = 0; i < n; i += 2) {
-        fprintf(f, "%06o : %06o\n", (start + i), w_read(start + i));
+        fprintf(fil, "%06o : %06o\n", ((adr)(start + i)), w_read((adr)(start + i)));
     }
-    fclose(f);
+    fclose(fil);
 }
 
-int take_mnem(word comm) {
-    int mnem = (comm >> 12);
-    return mnem;
+void f_mem_dump_1(adr start, word n, char* s) {
+    unsigned int i;
+    FILE *fi = fopen(s, "w");
+    for (i = 0; i < n; i += 1) {
+        fprintf(fi, "%06o : %06o\n", ((adr)(start + i)), b_read((adr)(start + i)));
+    }
+    fclose(fi);
 }
+
+//int take_mnem(word comm) {
+//    int mnem = (comm >> 12);
+//    return mnem;
+//}
 
 command take_com(word x) {
     command res = {0};
@@ -124,31 +145,65 @@ command take_com(word x) {
         res.pc_mode_dst = (x >> 3);
         x = x - (res.pc_mode_dst << 3);
         res.reg2 = x;
-    }
+    } else if(res.d_s_op == 0){ // non operand
+        res.opcode10_8 = (x >> 8);
+        x = x - (res.opcode10_8 << 8);
+        res.offset = (byte)x;
+    } else {}
     return res;
 }
 
 word take_src(command com){
+    if(com.reg1 != 7 && com.pc_mode_src != 0)
+        reg[com.reg1] -= 2;
     switch (com.pc_mode_src) {
         case 0:
             if(t)
                 fprintf(f,"R%d ", com.reg1);
             return reg[com.reg1];
         case 2:
-            reg[7] += 2;
+            reg[com.reg1] += 2;
             if(t)
-                fprintf(f, "#%d ", w_read(reg[7]));
-            return w_read(reg[7]);
+                fprintf(f, "#%d ", w_read(reg[com.reg1]));
+            return w_read(reg[com.reg1]);
         case 3:
-            reg[7] += 2;
-            return w_read(w_read(reg[7]));
+            reg[com.reg1] += 2;
+            return w_read(w_read(reg[com.reg1]));
         case 6:
-            reg[7] += 2;
-            return w_read((word)(reg[7] - 2 + w_read(reg[7])));
+            reg[com.reg1] += 2;
+            return w_read((word)(reg[com.reg1] - 2 + w_read(reg[com.reg1])));
         case 7:
-            return w_read(w_read((word)(reg[7] - 2 + w_read(reg[7]))));
+            reg[com.reg1] += 2;
+            return w_read(w_read((word)(reg[com.reg1] - 2 + w_read(reg[com.reg1]))));
         default:
+            fprintf(f, "DEFAULT EXIT (take_src) \n");
+            break;
+    }
+}
 
+word take_src_B(command com){
+    switch (com.pc_mode_src) {
+        case 0:
+            if(t)
+                fprintf(f,"R%d ", com.reg1);
+            return reg[com.reg1];
+        case 2:
+            //reg[com.reg1] += 1;
+            if(t) {
+                fprintf(f, "(R%d)+ ", com.reg1);
+            }
+            return b_read(reg[com.reg1]++);
+        case 3:
+            //reg[com.reg1] += 1;
+            return b_read(b_read(reg[com.reg1]++));
+        case 6:
+            //reg[com.reg1] += 1;
+            return b_read((word)(reg[com.reg1]++ + b_read(reg[com.reg1])));
+        case 7:
+            //reg[com.reg1] += 1;
+            return b_read(b_read((word)(reg[com.reg1]++ + b_read(reg[com.reg1]))));
+        default:
+            fprintf(f, "DEFAULT EXIT (take_src_B\n");
             break;
     }
 }
@@ -158,15 +213,15 @@ word take_dst(command com){
         case 0:
             return reg[com.reg2];
         case 2:
-            return w_read((word)(reg[7] + 2));
+            return w_read((word)(reg[com.reg2] + 2));
         case 3:
-            return w_read(w_read((word)(reg[7] + 2)));
+            return w_read(w_read((word)(reg[com.reg2] + 2)));
         case 6:
-            return w_read((word)(reg[7] + w_read((word)(reg[7] + 2))));
+            return w_read((word)(reg[com.reg2] + w_read((word)(reg[com.reg2] + 2))));
         case 7:
-            return w_read(w_read((word)(reg[7] + w_read((word)(reg[7] + 2)))));
+            return w_read(w_read((word)(reg[com.reg2] + w_read((word)(reg[com.reg2] + 2)))));
         default:
-
+            fprintf(f, "DEFAULT EXIT (take_dst)\n");
             break;
     }
 }
@@ -179,23 +234,27 @@ word push_dst(command com, word x){
             reg[com.reg2] = x;
             break;
         case 2:
-            reg[7] += 2;
-            w_write(reg[7], x);
+            reg[com.reg1] += 2;
+            w_write(reg[com.reg1], x);
+            reg[com.reg1] -= 2;
             break;
         case 3:
-            reg[7] += 2;
-            w_write(w_read(reg[7]), x);
+            reg[com.reg1] += 2;
+            w_write(w_read(reg[com.reg1]), x);
+            reg[com.reg1] -= 2;
             break;
         case 6:
-            reg[7] += 2;
-            w_write((word)(reg[7] - 2 + w_read(reg[7])), x);
+            reg[com.reg1] += 2;
+            w_write((word)(reg[com.reg1] - 2 + w_read(reg[com.reg1])), x);
+            reg[com.reg1] -= 2;
             break;
         case 7:
-            reg[7] += 2;
-            w_write(w_read((word)(reg[7] - 2 + w_read(reg[7]))), x);
+            reg[com.reg1] += 2;
+            w_write(w_read((word)(reg[com.reg1] - 2 + w_read(reg[com.reg1]))), x);
+            reg[com.reg1] -= 2;
             break;
         default:
-
+            fprintf(f, "DEFAULT EXIT (push_dst)\n");
             break;
     }
 }
@@ -203,37 +262,96 @@ word push_dst(command com, word x){
 void do_command(word comm) {
 
     if (comm == 0) {
-        fprintf(f, "\n------------ halted ------------\n");
+        if(t)
+            fprintf(f, "HALT \n");
+        fprintf(f, "\n--------------- halted ---------------\n");
         fprintf(f, "r0=%06o r2=%06o r4=%06o sp=%06o\n", reg[0], reg[2], reg[4], reg[6]);
         fprintf(f, "r1=%06o r3=%06o r5=%06o pc=%06o\n", reg[1], reg[3], reg[5], reg[7]);
+        fprintf(f, "N=%06o  Z=%06o  V=%06o  C=%06o\n", N, Z, V, C);
         exit(0);
     }
     command com = take_com(comm);
-    if(com.d_s_op == 2){
+    if(com.d_s_op == 2){  // DOUBLE OPERAND-----------------------------------------------------------------------------
         if(com.opcode14_12 == 7){
-
-        } else {
-            switch (com.opcode14_12) {
-                case 1:
+            switch (com.opcode11_9){
+                case 7: //SOB
                     if(t)
-                        fprintf(f,"MOV ");
-                    push_dst(com, take_src(com));
-                    break;
-                case 6:
-                    if(t)
-                        fprintf(f, "ADD ");
-                    push_dst(com, take_dst(com) + take_src(com));
+                        fprintf(f, "SOB ");
+                    reg[com.reg1]--;
+                    if(reg[com.reg1] > 0)
+                        reg[7]-= 2*(com.reg2 + 8*com.pc_mode_dst);
                     break;
                 default:
+                    fprintf(f, "DEFAULT EXIT \n");
+                    break;
+            }
 
+        } else { //  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            switch (com.opcode14_12) {
+                case 1: // MOV
+                    if(t)
+                        fprintf(f,"MOV");
+                    if(com.B == 0) {
+                        printf(" ");
+                        yy.ui = take_src(com);
+                        src = (word)yy.si;
+                        Z = src == 0 ? 1 : 0;
+                        push_dst(com, src);
+                    } else {
+                        if(t)
+                            fprintf(f, "B ");
+                        xx.uby = (byte)take_src_B(com);
+                        src = (word)xx.sby;
+                        Z = src == 0 ? 1 : 0;
+                        push_dst(com, src);
+                    }
+                    break;
+                case 6: // ADD
+                    if(t)
+                        fprintf(f, "ADD ");
+                    yy.ui = take_dst(com);
+                    zz.ui = take_src(com);
+                    push_dst(com, (word)(yy.si + zz.si));
+                    break;
+                default:
+                    fprintf(f, "DEFAULT EXIT \n");
                     break;
             }
         }
-    } else if(com.d_s_op == 1){
+    } else if(com.d_s_op == 1){  // SINGLE OPERAND----------------------------------------------------------------------
+        switch (com.opcode10_6){
+            case 8: // CLR
+                if(t)
+                    fprintf(f, "CLR ");
+                N = 0; Z = 1; V = 0; C = 0;
+                push_dst(com, 0);
+                break;
+            default:
+                fprintf(f, "DEFAULT EXIT \n");
+                break;
+        }
+    } else if(com.d_s_op == 0) { // s_byte instructions: NO OPERAND-----------------------------------------------------
+        switch (com.opcode10_8){
+            case 1: // BR
+                if(t)
+                    fprintf(f, "BR ");
+                xx.uby = com.offset;
+                reg[7] += 2 * xx.sby;
+                break;
+            case 3: // BEQ
+                if(t)
+                    fprintf(f, "BEQ ");
+                if(Z == 1) {
+                    xx.uby = com.offset;
+                    reg[7] += 2 * xx.sby;
+                }
+                break;
+            default:
+                fprintf(f, "DEFAULT EXIT (do_command !?!?!?)\n");
+                break;
 
-    } else {
-
-    }
+        }
+    } else { fprintf(f, "take_com error"); }
 }
 
 //void test_mem() {

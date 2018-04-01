@@ -13,27 +13,37 @@ void w_write(adr a, word val); // пишет значение val в "стару
 int load_file();
 adr_n *f_load_file();
 void mem_dump(adr start, word n);
-void f_mem_dump(adr start, word n);
+void f_mem_dump(adr start, word n, char* s);
 int take_mnem(word comm);
 void do_command(word comm);
 command take_com(word x);
+void print_all();
 
 int main(int argc, char **argv) {
-    t = 1;
-    if (argc > 1)
-        if (strcmp(argv[1], "-t") == 0)
-            t = 1;
-        else
-            printf("< %s > is not an executable command\n", argv[1]);
-    adr_n *an = f_load_file();
-    f_mem_dump(an->ad, (word) an->n);
+    FILE *g = fopen("param.txt", "r");
+    char *param = malloc(100 * sizeof(char));
+    fscanf(g, "%90s", param);
+    t = 0;
+    if (strstr(param, "-t") != NULL)
+        t = 1;
+    else
+        printf("< %s > is not an executable command\n", param);
+    free(param);
+    fclose(g);
+
+    adr_n * an = f_load_file();
+    f_mem_dump(an->ad, (word) an->n, "load_out.txt");
     f = fopen("load_out_res.txt", "w");
+    if(t)
+        fprintf(f, "TRACE \n \n");
     for (reg[7] = an->ad; reg[7] < an->ad + an->n; reg[7] += 2) {
         if(t)
             fprintf(f, "%06o : %06o  ", reg[7], w_read(reg[7]));
         do_command(w_read(reg[7]));
-        if(t)
-            fprintf(f,"\n");
+        if(t) {
+            print_all();
+            fprintf(f, "\n");
+        }
     }
     free(an);
     fclose(f);
