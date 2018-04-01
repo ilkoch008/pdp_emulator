@@ -8,18 +8,13 @@
 #include <string.h>
 #include "variables.h"
 
+byte b_read(adr a) {
+    return mem[a];
+}
 
-
-
-
-//byte b_read(adr a) {
-//    return mem[a];
-//}
-
-//void b_write(adr a, byte val) {
-//    mem[a] = val;
-//}
-
+void b_write(adr a, byte val) {
+    mem[a] = val;
+}
 
 word w_read(adr a) {
     word x;
@@ -67,9 +62,6 @@ adr_n *f_load_file() { // ЧИТАЕМ ПОКА ПО ОДНОЙ ПРОГЕ!!!
             //k++; // ну тут понятно
         }
     }
-//    ret.ad = ad;
-//    ret.n = k;
-    //printf("%hx\n", ret->ad);
     fclose(f);
     return ret;
 }
@@ -139,9 +131,13 @@ command take_com(word x) {
 word take_src(command com){
     switch (com.pc_mode_src) {
         case 0:
+            if(t)
+                fprintf(f,"R%d ", com.reg1);
             return reg[com.reg1];
         case 2:
             reg[7] += 2;
+            if(t)
+                fprintf(f, "#%d ", w_read(reg[7]));
             return w_read(reg[7]);
         case 3:
             reg[7] += 2;
@@ -178,6 +174,8 @@ word take_dst(command com){
 word push_dst(command com, word x){
     switch (com.pc_mode_dst) {
         case 0:
+            if(t)
+                fprintf(f, "R%d ", com.reg2);
             reg[com.reg2] = x;
             break;
         case 2:
@@ -203,9 +201,9 @@ word push_dst(command com, word x){
 }
 
 void do_command(word comm) {
-    FILE *f = fopen("load_out_res.txt", "w");
+
     if (comm == 0) {
-        fprintf(f, "------------ halted ------------\n");
+        fprintf(f, "\n------------ halted ------------\n");
         fprintf(f, "r0=%06o r2=%06o r4=%06o sp=%06o\n", reg[0], reg[2], reg[4], reg[6]);
         fprintf(f, "r1=%06o r3=%06o r5=%06o pc=%06o\n", reg[1], reg[3], reg[5], reg[7]);
         exit(0);
@@ -217,9 +215,13 @@ void do_command(word comm) {
         } else {
             switch (com.opcode14_12) {
                 case 1:
+                    if(t)
+                        fprintf(f,"MOV ");
                     push_dst(com, take_src(com));
                     break;
                 case 6:
+                    if(t)
+                        fprintf(f, "ADD ");
                     push_dst(com, take_dst(com) + take_src(com));
                     break;
                 default:
@@ -232,7 +234,6 @@ void do_command(word comm) {
     } else {
 
     }
-    fclose(f);
 }
 
 //void test_mem() {

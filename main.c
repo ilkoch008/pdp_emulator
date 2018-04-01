@@ -19,13 +19,24 @@ void do_command(word comm);
 command take_com(word x);
 
 int main(int argc, char **argv) {
-
+    t = 1;
+    if (argc > 1)
+        if (strcmp(argv[1], "-t") == 0)
+            t = 1;
+        else
+            printf("< %s > is not an executable command\n", argv[1]);
     adr_n *an = f_load_file();
     f_mem_dump(an->ad, (word) an->n);
+    f = fopen("load_out_res.txt", "w");
     for (reg[7] = an->ad; reg[7] < an->ad + an->n; reg[7] += 2) {
+        if(t)
+            fprintf(f, "%06o : %06o  ", reg[7], w_read(reg[7]));
         do_command(w_read(reg[7]));
+        if(t)
+            fprintf(f,"\n");
     }
     free(an);
+    fclose(f);
     return 0;
 }
 

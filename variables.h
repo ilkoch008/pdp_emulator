@@ -9,7 +9,8 @@ typedef unsigned char byte;
 typedef unsigned short int word;
 typedef word adr;
 
-int t = 0; // для трассировки
+FILE * f;
+int t; // для трассировки
 byte mem[64 * 1024];
 word reg[8];
 /*
