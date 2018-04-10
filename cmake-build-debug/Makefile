@@ -203,6 +203,33 @@ rubbish.c.s:
 	$(MAKE) -f CMakeFiles\test_3.dir\build.make CMakeFiles/test_3.dir/rubbish.c.s
 .PHONY : rubbish.c.s
 
+take.obj: take.c.obj
+
+.PHONY : take.obj
+
+# target to build an object file
+take.c.obj:
+	$(MAKE) -f CMakeFiles\test_3.dir\build.make CMakeFiles/test_3.dir/take.c.obj
+.PHONY : take.c.obj
+
+take.i: take.c.i
+
+.PHONY : take.i
+
+# target to preprocess a source file
+take.c.i:
+	$(MAKE) -f CMakeFiles\test_3.dir\build.make CMakeFiles/test_3.dir/take.c.i
+.PHONY : take.c.i
+
+take.s: take.c.s
+
+.PHONY : take.s
+
+# target to generate assembly for a file
+take.c.s:
+	$(MAKE) -f CMakeFiles\test_3.dir\build.make CMakeFiles/test_3.dir/take.c.s
+.PHONY : take.c.s
+
 # Help Target
 help:
 	@echo The following are some of the valid targets for this Makefile:
@@ -221,6 +248,9 @@ help:
 	@echo ... rubbish.obj
 	@echo ... rubbish.i
 	@echo ... rubbish.s
+	@echo ... take.obj
+	@echo ... take.i
+	@echo ... take.s
 .PHONY : help
 
 

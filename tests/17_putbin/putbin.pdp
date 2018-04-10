@@ -1,0 +1,72 @@
+	.=1000
+main:
+	mov #main, sp
+	;lmov #-5, R1
+	;jsr pc, put21
+	mov #107075, R1
+	jsr	pc, putbin
+	halt
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; putbin - print 1 binary digit
+;   R1 - number
+; corrupted:
+;   flags
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
+putbin:
+	mov R1, -(sp)
+	mov R3, -(sp)
+	mov #20, R3
+putbinloop:
+	jsr pc, put21
+	asl R1
+	sob R3, putbinloop
+	
+	
+	mov (sp)+, R3
+	mov (sp)+, R1
+	rts pc
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; put21 - print 1 binary digit
+;   R1 - number
+; corrupted:
+;   R0
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
+put21:	
+	movb #'0, R0
+	tst	R1
+	bpl put21end
+	incb R0
+put21end:
+	jsr pc, putc
+	rts pc
+
+	
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; puts - print string up to 0
+;   R1 - string address
+; corrupted:
+;   R0
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
+puts:	
+	movb 	(R1)+, R0
+	beq 	ENDputs
+	jsr		pc, putc
+	br		puts
+ENDputs:
+	rts		pc
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; putc - print 1 character from R0
+;   R0 - ascii code
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
+ostat = 177564
+odata = 177566
+putc:
+	tstb	@#ostat
+	bpl		putc
+	movb	R0, @#odata
+	rts 	pc
+	

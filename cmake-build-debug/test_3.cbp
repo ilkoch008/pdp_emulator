@@ -87,6 +87,9 @@
 		<Unit filename="R:/progi/pdp_emulator/rubbish.c">
 			<Option target="test_3"/>
 		</Unit>
+		<Unit filename="R:/progi/pdp_emulator/take.c">
+			<Option target="test_3"/>
+		</Unit>
 		<Unit filename="R:/progi/pdp_emulator/variables.h">
 			<Option target="test_3"/>
 		</Unit>

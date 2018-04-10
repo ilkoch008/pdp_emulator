@@ -36,7 +36,7 @@ int main(int argc, char **argv) {
     f = fopen("load_out_res.txt", "w");
     if(t)
         fprintf(f, "TRACE \n \n");
-    for (reg[7] = an->ad; reg[7] < an->ad + an->n; reg[7] += 2) {
+    for (reg[7] = an->ad; reg[7] < an->ad + an->n; ) {
         if(t)
             fprintf(f, "%06o : %06o  ", reg[7], w_read(reg[7]));
         do_command(w_read(reg[7]));

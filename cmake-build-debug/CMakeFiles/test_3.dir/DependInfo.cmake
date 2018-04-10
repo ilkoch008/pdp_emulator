@@ -7,6 +7,7 @@ set(CMAKE_DEPENDS_CHECK_C
   "R:/progi/pdp_emulator/functions.c" "R:/progi/pdp_emulator/cmake-build-debug/CMakeFiles/test_3.dir/functions.c.obj"
   "R:/progi/pdp_emulator/main.c" "R:/progi/pdp_emulator/cmake-build-debug/CMakeFiles/test_3.dir/main.c.obj"
   "R:/progi/pdp_emulator/rubbish.c" "R:/progi/pdp_emulator/cmake-build-debug/CMakeFiles/test_3.dir/rubbish.c.obj"
+  "R:/progi/pdp_emulator/take.c" "R:/progi/pdp_emulator/cmake-build-debug/CMakeFiles/test_3.dir/take.c.obj"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 

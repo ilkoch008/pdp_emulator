@@ -2,6 +2,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/test_3.dir/main.c.obj"
   "CMakeFiles/test_3.dir/rubbish.c.obj"
   "CMakeFiles/test_3.dir/functions.c.obj"
+  "CMakeFiles/test_3.dir/take.c.obj"
   "test_3.pdb"
   "test_3.exe"
   "test_3.exe.manifest"

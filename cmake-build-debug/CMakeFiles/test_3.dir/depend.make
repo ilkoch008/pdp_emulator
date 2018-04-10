@@ -9,3 +9,6 @@ CMakeFiles/test_3.dir/main.c.obj: ../variables.h
 
 CMakeFiles/test_3.dir/rubbish.c.obj: ../rubbish.c
 
+CMakeFiles/test_3.dir/take.c.obj: ../take.c
+CMakeFiles/test_3.dir/take.c.obj: ../variables.h
+

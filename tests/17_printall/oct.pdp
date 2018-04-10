@@ -1,0 +1,66 @@
+. = 1000
+main:
+	mov #main, sp
+	mov #35., r0		; 100011
+	jsr pc, printBin
+	halt
+	
+printBin:
+	mov #2., r1
+	jsr pc, printNum
+	rts pc
+	
+printNum:
+	cmp r1, #2
+	blt .bad
+	cmp r1, #36.
+	bgt .bad
+	jmp .ok
+	
+.bad:
+	mov #'#, r0
+	jsr pc, putc
+	rts pc
+	
+.ok:
+	mov r1, r2
+	mov #0, -(sp)
+.loop:
+	mov r0, r1
+	clr r0
+	div r2, r0
+	jsr pc, getDigitChar
+	mov r1, -(sp)
+	
+	tst r0
+	bne .loop
+	
+.loop2:
+	mov (sp)+, r0
+	jsr pc, putc
+	tst r0
+	bne .loop2
+	rts pc
+	
+getDigitChar:
+	cmp r1, #10.
+	blt .decimal
+	sub #10., r1
+	add #'A, r1
+	rts pc
+
+.decimal:
+	add #'0, r1
+	rts pc
+
+ocsr = 0177564
+odat = 0177566
+
+putc:
+	tstb @#ocsr
+	bpl putc
+	movb r0, @#odat
+	rts pc
+	
+	halt
+
