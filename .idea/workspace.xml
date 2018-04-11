@@ -12,27 +12,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d603b4a3-be9e-447a-9ed3-25a24c7abc05" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/take.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile2" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile2" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/progress.marks" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/progress.marks" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/test_3.dir/DependInfo.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/test_3.dir/DependInfo.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/test_3.dir/build.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/test_3.dir/build.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/test_3.dir/cmake_clean.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/test_3.dir/cmake_clean.cmake" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/test_3.dir/functions.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/test_3.dir/functions.c.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/test_3.dir/main.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/test_3.dir/main.c.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/test_3.dir/objects.a" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/test_3.dir/objects.a" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/test_3.dir/objects1.rsp" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/test_3.dir/objects1.rsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/test_3.dir/progress.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/test_3.dir/progress.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/test_3.dir/take.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/test_3.dir/take.c.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/load.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/load.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/load_out.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/load_out.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/load_out_res.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/load_out_res.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/param.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/param.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/test_3.cbp" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/test_3.cbp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/test_3.exe" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/test_3.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/functions.c" beforeDir="false" afterPath="$PROJECT_DIR$/functions.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/take.c" beforeDir="false" afterPath="$PROJECT_DIR$/take.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/variables.h" beforeDir="false" afterPath="$PROJECT_DIR$/variables.h" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -54,11 +46,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.c" pinned="false" current-in-tab="false">
+      <file leaf-file-name="main.c" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="41" column="8" selection-start-line="41" selection-start-column="8" selection-end-line="41" selection-end-column="8" />
+            <state relative-caret-position="198">
+              <caret line="34" column="18" selection-start-line="34" selection-start-column="18" selection-end-line="34" selection-end-column="18" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -69,15 +61,23 @@
       <file leaf-file-name="functions.c" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/functions.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="127">
-              <caret line="219" column="23" selection-start-line="219" selection-start-column="23" selection-end-line="219" selection-end-column="23" />
+            <state relative-caret-position="1901">
+              <caret line="320" column="24" selection-start-line="320" selection-start-column="24" selection-end-line="320" selection-end-column="24" />
               <folding>
                 <element signature="e#41#59#0" expanded="true" />
+                <element signature="e#281#651#0" />
+                <element signature="e#609#650#0" />
+                <element signature="e#652#703#0" />
+                <element signature="e#705#796#0" />
+                <element signature="e#798#830#0" />
+                <element signature="e#832#926#0" />
                 <element signature="e#894#1249#0" />
+                <element signature="e#1258#2087#0" />
                 <element signature="e#2029#2237#0" />
+                <element signature="e#2239#2478#0" />
                 <element signature="e#2480#2718#0" />
-                <element signature="e#2720#2748#0" />
                 <element signature="e#2804#4345#0" />
+                <element signature="e#6761#7694#0" />
               </folding>
             </state>
           </provider>
@@ -86,8 +86,8 @@
       <file leaf-file-name="take.c" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/take.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="273">
-              <caret line="71" selection-start-line="71" selection-end-line="71" />
+            <state relative-caret-position="153">
+              <caret line="9" selection-start-line="9" selection-end-line="9" />
               <folding>
                 <element signature="e#43#61#0" expanded="true" />
               </folding>
@@ -95,11 +95,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="variables.h" pinned="false" current-in-tab="true">
+      <file leaf-file-name="variables.h" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/variables.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="430">
-              <caret line="62" lean-forward="true" selection-start-line="62" selection-end-line="62" />
+            <state relative-caret-position="-357">
+              <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
             </state>
           </provider>
         </entry>
@@ -128,6 +128,8 @@
       <find>start + i</find>
       <find>reg1</find>
       <find>com.pc_mode_src</find>
+      <find>void</find>
+      <find>;</find>
     </findStrings>
     <replaceStrings>
       <replace>ret-&gt;</replace>
@@ -138,6 +140,7 @@
       <replace>(adr)(start + i)</replace>
       <replace>reg2</replace>
       <replace>ad_mode</replace>
+      <replace>int</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -149,9 +152,9 @@
       <list>
         <option value="$PROJECT_DIR$/ma.c" />
         <option value="$PROJECT_DIR$/rubbish.c" />
-        <option value="$PROJECT_DIR$/variables.h" />
         <option value="$PROJECT_DIR$/take.c" />
         <option value="$PROJECT_DIR$/functions.c" />
+        <option value="$PROJECT_DIR$/variables.h" />
         <option value="$PROJECT_DIR$/main.c" />
       </list>
     </option>
@@ -162,7 +165,7 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="1">
+  <component name="ProjectFrameBounds">
     <option name="x" value="683" />
     <option name="width" value="683" />
     <option name="height" value="728" />
@@ -245,7 +248,7 @@
       <workItem from="1522577925224" duration="165000" />
       <workItem from="1522578118705" duration="380000" />
       <workItem from="1522603934287" duration="17491000" />
-      <workItem from="1522697190135" duration="28906000" />
+      <workItem from="1522697190135" duration="37685000" />
     </task>
     <task id="LOCAL-00001" summary="first push">
       <created>1521572316634</created>
@@ -286,19 +289,19 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="143829000" />
+    <option name="totallyTimeSpent" value="152608000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="683" y="0" width="683" height="728" extended-state="1" />
+    <frame x="683" y="0" width="683" height="728" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.0" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Messages" order="7" sideWeight="0.47291362" weight="0.015873017" />
+      <window_info active="true" anchor="bottom" id="Messages" order="7" sideWeight="0.4707646" visible="true" weight="0.267101" />
       <window_info anchor="bottom" id="CMake" order="7" />
-      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5202399" side_tool="true" visible="true" weight="0.0" />
+      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.52923536" side_tool="true" visible="true" weight="0.267101" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4797601" visible="true" weight="0.0" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4797601" weight="0.0" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info id="Favorites" order="2" side_tool="true" />
@@ -330,79 +333,29 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/main.c</url>
-          <line>41</line>
-          <option name="timeStamp" value="22" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/main.c</url>
-          <line>21</line>
+          <line>6</line>
           <option name="timeStamp" value="23" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/main.c</url>
-          <line>38</line>
-          <option name="timeStamp" value="24" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/main.c</url>
-          <line>37</line>
-          <option name="timeStamp" value="25" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/main.c</url>
-          <line>35</line>
-          <option name="timeStamp" value="26" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/main.c</url>
-          <line>33</line>
-          <option name="timeStamp" value="27" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/main.c</url>
-          <line>34</line>
-          <option name="timeStamp" value="28" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/functions.c</url>
-          <line>65</line>
+          <line>61</line>
           <option name="timeStamp" value="29" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/functions.c</url>
-          <line>219</line>
+          <line>210</line>
           <option name="timeStamp" value="53" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/functions.c</url>
-          <line>221</line>
-          <option name="timeStamp" value="54" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/functions.c</url>
-          <line>289</line>
-          <option name="timeStamp" value="55" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/take.c</url>
-          <line>32</line>
+          <line>10</line>
           <option name="timeStamp" value="59" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/functions.c</url>
-          <line>261</line>
-          <option name="timeStamp" value="60" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/functions.c</url>
-          <line>262</line>
-          <option name="timeStamp" value="61" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="62" />
+      <option name="time" value="64" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="CMakeRunConfiguration">
@@ -482,11 +435,19 @@
           <caret line="204" column="35" lean-forward="true" selection-start-line="204" selection-start-column="35" selection-end-line="204" selection-end-column="35" />
           <folding>
             <element signature="e#41#59#0" expanded="true" />
+            <element signature="e#281#651#0" />
+            <element signature="e#609#650#0" />
+            <element signature="e#652#703#0" />
+            <element signature="e#705#796#0" />
+            <element signature="e#798#830#0" />
+            <element signature="e#832#926#0" />
             <element signature="e#894#1249#0" />
+            <element signature="e#1258#2087#0" />
             <element signature="e#2029#2237#0" />
+            <element signature="e#2239#2478#0" />
             <element signature="e#2480#2718#0" />
-            <element signature="e#2720#2748#0" />
             <element signature="e#2804#4345#0" />
+            <element signature="e#6761#7694#0" />
           </folding>
         </state>
       </provider>
@@ -528,11 +489,19 @@
           <caret line="280" selection-start-line="280" selection-end-line="280" />
           <folding>
             <element signature="e#41#59#0" expanded="true" />
+            <element signature="e#281#651#0" />
+            <element signature="e#609#650#0" />
+            <element signature="e#652#703#0" />
+            <element signature="e#705#796#0" />
+            <element signature="e#798#830#0" />
+            <element signature="e#832#926#0" />
             <element signature="e#894#1249#0" />
+            <element signature="e#1258#2087#0" />
             <element signature="e#2029#2237#0" />
+            <element signature="e#2239#2478#0" />
             <element signature="e#2480#2718#0" />
-            <element signature="e#2720#2748#0" />
             <element signature="e#2804#4345#0" />
+            <element signature="e#6761#7694#0" />
           </folding>
         </state>
       </provider>
@@ -574,11 +543,19 @@
           <caret line="149" column="5" lean-forward="true" selection-start-line="149" selection-start-column="5" selection-end-line="149" selection-end-column="5" />
           <folding>
             <element signature="e#41#59#0" expanded="true" />
+            <element signature="e#281#651#0" />
+            <element signature="e#609#650#0" />
+            <element signature="e#652#703#0" />
+            <element signature="e#705#796#0" />
+            <element signature="e#798#830#0" />
+            <element signature="e#832#926#0" />
             <element signature="e#894#1249#0" />
+            <element signature="e#1258#2087#0" />
             <element signature="e#2029#2237#0" />
+            <element signature="e#2239#2478#0" />
             <element signature="e#2480#2718#0" />
-            <element signature="e#2720#2748#0" />
             <element signature="e#2804#4345#0" />
+            <element signature="e#6761#7694#0" />
           </folding>
         </state>
       </provider>
@@ -596,11 +573,19 @@
           <caret line="143" column="39" lean-forward="true" selection-start-line="143" selection-start-column="39" selection-end-line="143" selection-end-column="39" />
           <folding>
             <element signature="e#41#59#0" expanded="true" />
+            <element signature="e#281#651#0" />
+            <element signature="e#609#650#0" />
+            <element signature="e#652#703#0" />
+            <element signature="e#705#796#0" />
+            <element signature="e#798#830#0" />
+            <element signature="e#832#926#0" />
             <element signature="e#894#1249#0" />
+            <element signature="e#1258#2087#0" />
             <element signature="e#2029#2237#0" />
+            <element signature="e#2239#2478#0" />
             <element signature="e#2480#2718#0" />
-            <element signature="e#2720#2748#0" />
             <element signature="e#2804#4345#0" />
+            <element signature="e#6761#7694#0" />
           </folding>
         </state>
       </provider>
@@ -642,11 +627,19 @@
           <caret line="176" column="51" selection-start-line="176" selection-start-column="51" selection-end-line="176" selection-end-column="51" />
           <folding>
             <element signature="e#41#59#0" expanded="true" />
+            <element signature="e#281#651#0" />
+            <element signature="e#609#650#0" />
+            <element signature="e#652#703#0" />
+            <element signature="e#705#796#0" />
+            <element signature="e#798#830#0" />
+            <element signature="e#832#926#0" />
             <element signature="e#894#1249#0" />
+            <element signature="e#1258#2087#0" />
             <element signature="e#2029#2237#0" />
+            <element signature="e#2239#2478#0" />
             <element signature="e#2480#2718#0" />
-            <element signature="e#2720#2748#0" />
             <element signature="e#2804#4345#0" />
+            <element signature="e#6761#7694#0" />
           </folding>
         </state>
       </provider>
@@ -770,43 +763,51 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/take.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="71" selection-start-line="71" selection-end-line="71" />
+        <state relative-caret-position="153">
+          <caret line="9" selection-start-line="9" selection-end-line="9" />
           <folding>
             <element signature="e#43#61#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="41" column="8" selection-start-line="41" selection-start-column="8" selection-end-line="41" selection-end-column="8" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/functions.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="127">
-          <caret line="219" column="23" selection-start-line="219" selection-start-column="23" selection-end-line="219" selection-end-column="23" />
+        <state relative-caret-position="1901">
+          <caret line="320" column="24" selection-start-line="320" selection-start-column="24" selection-end-line="320" selection-end-column="24" />
           <folding>
             <element signature="e#41#59#0" expanded="true" />
+            <element signature="e#281#651#0" />
+            <element signature="e#609#650#0" />
+            <element signature="e#652#703#0" />
+            <element signature="e#705#796#0" />
+            <element signature="e#798#830#0" />
+            <element signature="e#832#926#0" />
             <element signature="e#894#1249#0" />
+            <element signature="e#1258#2087#0" />
             <element signature="e#2029#2237#0" />
+            <element signature="e#2239#2478#0" />
             <element signature="e#2480#2718#0" />
-            <element signature="e#2720#2748#0" />
             <element signature="e#2804#4345#0" />
+            <element signature="e#6761#7694#0" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/variables.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="430">
-          <caret line="62" lean-forward="true" selection-start-line="62" selection-end-line="62" />
+        <state relative-caret-position="-357">
+          <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="34" column="18" selection-start-line="34" selection-start-column="18" selection-end-line="34" selection-end-column="18" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

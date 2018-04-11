@@ -8,10 +8,6 @@
 #include <string.h>
 #include "variables.h"
 
-void f_mem_dump(adr start, word n, char* s);
-void f_mem_dump_1(adr start, word n, char* s);
-word take(word ad_mode, word regi, word B);
-
 void print_all() {
     fprintf(f, "\n------------ print all ------------\n");
     fprintf(f, "r0=%06o r2=%06o r4=%06o sp=%06o\n", reg[0], reg[2], reg[4], reg[6]);
@@ -63,7 +59,7 @@ int load_file() {
     return k;
 }
 
-adr_n * f_load_file() { // ЧИТАЕМ ПОКА ПО ОДНОЙ ПРОГЕ!!!
+adr_n * f_load_file(FILE * fi) { // ЧИТАЕМ ПОКА ПО ОДНОЙ ПРОГЕ!!!
     adr ad; // адрес, на который пишем
     adr_n *ret = malloc(sizeof(adr_n)); // инфа о том, сколько и куда записали
     ret->ad = 0;
@@ -72,18 +68,17 @@ adr_n * f_load_file() { // ЧИТАЕМ ПОКА ПО ОДНОЙ ПРОГЕ!!!
     int i;
     //unsigned int k = 0; // счётчик записанных байтов
     unsigned short int x;
-    FILE *fi = fopen("load.txt", "r");
-
     while (fscanf(fi, "%hx%x", &ret->ad, &ret->n) == 2) {
         //printf("%hx\n", ret->ad);
         for (i = 0; i < ret->n; i++) {
             fscanf(fi, "%hx", &x); // считали
-            mem[ret->ad + i] = (byte) x; // записали
+            //mem[ret->ad + i] = (byte) x; // записали
+            b_write((adr)(ret->ad + i), (byte)x);
             //k++; // ну тут понятно
         }
        // f_mem_dump_1(ret->ad, (word) ret->n, "load_out_1.txt");
     }
-    fclose(fi);
+
     return ret;
 }
 
@@ -111,11 +106,6 @@ void f_mem_dump_1(adr start, word n, char* s) {
     }
     fclose(fi);
 }
-
-//int take_mnem(word comm) {
-//    int mnem = (comm >> 12);
-//    return mnem;
-//}
 
 command take_com(word x) {
     command res = {0};
@@ -217,125 +207,134 @@ void do_command(word comm) {
         fprintf(f, "N=%06o  Z=%06o  V=%06o  C=%06o\n", N, Z, V, C);
         exit(0);
     }
+    word save = comm;
     command com = take_com(comm);
     reg[7] += 2;
-    if(com.d_s_op == 2){  // DOUBLE OPERAND-----------------------------------------------------------------------------
-        if(com.opcode14_12 == 7){
-            switch (com.opcode11_9){
-                case 7: //SOB
-                    if(t)
-                        fprintf(f, "SOB ");
-                    reg[com.reg1]--;
-                    if(reg[com.reg1] > 0)
-                        reg[7]-= 2*(com.reg2 + 8*com.pc_mode_dst);
-                    break;
-                default:
-                    fprintf(f, "DEFAULT EXIT (do_command !?!?!?)\n");
-                    break;
-            }
+    word BB;
+    BB = (save >> 15);
+    save = save -  (BB << 15);
+    int indik;
 
-        } else { //  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            switch (com.opcode14_12) {
-                case 1: // MOV
-                    if (t)
-                        fprintf(f, "MOV");
-                    if (com.B == 0) {
-                        if (t)
-                            fprintf(f, " ");
-                        yy.ui = take(com.pc_mode_src, com.reg1, com.B);
-                        src = (word)yy.si;
-                        Z = src == 0 ? 1 : 0;
-                        push_dst(com, src);
-
-                    } else {
-                        if (t)
-                            fprintf(f, "B ");
-                        xx.uby = (byte)take(com.pc_mode_src, com.reg1, com.B);
-                        src = (word)xx.sby;
-                        Z = src == 0 ? 1 : 0;
-                        push_dst(com, src);
-                    }
-                    break;
-                case 6: // ADD
-                    if(t)
-                        fprintf(f, "ADD ");
-                    yy.ui = take(com.pc_mode_dst, com.reg2, com.B);
-                    zz.ui = take(com.pc_mode_src, com.reg1, com.B);
-                    short int save = yy.si;
-                    yy.si = yy.si + zz.si;
-                    N = yy.si < 0 ? 1 : 0;
-                    Z = yy.si == 0 ? 1 : 0;
-                    if(save < 0 && zz.si < 0 && yy.si > 0) V = 1;
-                    else if (save > 0 && zz.si > 0 && yy.si < 0) V = 1;
-                    else V = 0;
-                    push_dst(com, (word)(yy.si));
-                    break;
-                default:
-                    fprintf(f, "DEFAULT EXIT (do_command !?!?!?)\n");
-                    break;
-            }
-        }
-    } else if(com.d_s_op == 1){  // SINGLE OPERAND----------------------------------------------------------------------
-        switch (com.opcode10_6){
-            case 8: // CLR
-                if(t)
-                    fprintf(f, "CLR ");
-                N = 0; Z = 1; V = 0; C = 0;
-                push_dst(com, 0);
-                break;
-            case 15: // TST
-                if(com.B){ // TSTB
-                    if(t)
-                        fprintf(f, "TSTB ");
-                    xx.uby = (byte)take(com.pc_mode_dst, com.reg2, com.B);
-                    N = xx.sby < 0 ? 1 : 0;
-                    Z = xx.sby == 0 ? 1 : 0;
-                    V = 0; C = 0;
-                } else { // TST
-                    if(t)
-                        fprintf(f, "TST ");
-                    yy.ui = take(com.pc_mode_dst, com.reg2, com.B);
-                    N = yy.si < 0 ? 1 : 0;
-                    Z = yy.si == 0 ? 1 : 0;
-                    V = 0; C = 0;
-                }
-                break;
-            default:
-                fprintf(f, "DEFAULT EXIT (do_command !?!?!?)\n");
+    int i;
+    for(i = 0; ; i++) {
+        if (func_list[i].opc == (func_list[i].msk & save)) {
+            indik = func_list[i].instr(com);
+            if(indik == 0)
                 break;
         }
-    } else if(com.d_s_op == 0) { // s_byte instructions: NO OPERAND-----------------------------------------------------
-        switch (com.opcode10_8){
-            case 1: // BR
-                if(t)
-                    fprintf(f, "BR ");
-                xx.uby = com.offset;
-                reg[7] += 2 * xx.sby;
-                break;
-            case 3: // BEQ
-                if(t)
-                    fprintf(f, "BEQ ");
-                if(Z == 1) {
-                    xx.uby = com.offset;
-                    reg[7] += 2 * xx.sby;
-                }
-                break;
-            default:
-                fprintf(f, "DEFAULT EXIT (do_command !?!?!?)\n");
-                break;
+    }
 
-        }
-    } else { fprintf(f, "take_com error"); }
 }
 
-//void test_mem() {
-//    byte b0, b1;
-//    word w;
-//    w = 0x0d0c;
-//    w_write(4, w);
-//    b0 = b_read(4);
-//    b1 = b_read(5);
-//    printf("%04x = %02x%02x\n", w, b1, b0);
-//    assert(b0 == 0x0c);
-//    assert(b1 == 0x0d);
-//}
+int sob(command com){
+    if(t)
+        fprintf(f, "SOB ");
+    reg[com.reg1]--;
+    if(reg[com.reg1] > 0)
+        reg[7]-= 2*(com.reg2 + 8*com.pc_mode_dst);
+    return 0;
+}
+
+int mov(command com){
+    if (t)
+        fprintf(f, "MOV");
+    if (com.B == 0) {
+        if (t)
+            fprintf(f, " ");
+        yy.ui = take(com.pc_mode_src, com.reg1, com.B);
+        src = (word)yy.si;
+        Z = src == 0 ? 1 : 0;
+        push_dst(com, src);
+
+    } else {
+        if (t)
+            fprintf(f, "B ");
+        xx.uby = (byte)take(com.pc_mode_src, com.reg1, com.B);
+        src = (word)xx.sby;
+        Z = src == 0 ? 1 : 0;
+        push_dst(com, src);
+    }
+    return 0;
+}
+
+int add(command com){
+    if(t)
+        fprintf(f, "ADD ");
+    yy.ui = take(com.pc_mode_dst, com.reg2, com.B);
+    zz.ui = take(com.pc_mode_src, com.reg1, com.B);
+    short int save = yy.si;
+    yy.si = yy.si + zz.si;
+    N = yy.si < 0 ? 1 : 0;
+    Z = yy.si == 0 ? 1 : 0;
+    if(save < 0 && zz.si < 0 && yy.si > 0) V = 1;
+    else if (save > 0 && zz.si > 0 && yy.si < 0) V = 1;
+    else V = 0;
+    push_dst(com, (word)(yy.si));
+    return 0;
+}
+
+int tst(command com){
+    if(com.B){ // TSTB
+        if(t)
+            fprintf(f, "TSTB ");
+        xx.uby = (byte)take(com.pc_mode_dst, com.reg2, com.B);
+        N = xx.sby < 0 ? 1 : 0;
+        Z = xx.sby == 0 ? 1 : 0;
+        V = 0; C = 0;
+    } else { // TST
+        if (t)
+            fprintf(f, "TST ");
+        yy.ui = take(com.pc_mode_dst, com.reg2, com.B);
+        N = yy.si < 0 ? 1 : 0;
+        Z = yy.si == 0 ? 1 : 0;
+        V = 0;
+        C = 0;
+    }
+    return 0;
+}
+
+int br(command com){
+    if(t)
+        fprintf(f, "BR ");
+    xx.uby = com.offset;
+    reg[7] += 2 * xx.sby;
+    return 0;
+}
+
+int beq(command com){
+    if(t)
+        fprintf(f, "BEQ ");
+    if(Z == 1) {
+        xx.uby = com.offset;
+        reg[7] += 2 * xx.sby;
+    }
+    return 0;
+}
+
+int bpl(command com) {
+    if (N == 0 && com.B == 1) {
+        if(t)
+            fprintf(f, "BPL ");
+        xx.uby = com.offset;
+        reg[7] += 2 * xx.sby;
+        return 0;
+    } else { return 1; }
+}
+
+int nothing(command com){
+    if(t)
+        fprintf(f, "Ha! loh, net tut takoy function\n ");
+    return 1;
+}
+
+func func_list[100] =
+        {
+                {0177000, 0077000, sob},
+                {0170000, 0010000, mov},
+                {0170000, 0060000, add},
+                {0177700, 0005700, tst},
+                {0177400, 0000400, br},
+                {0177400, 0001400, beq},
+                {0177400, 0000000, bpl},
+                {0000000, 0000000, nothing}
+        };

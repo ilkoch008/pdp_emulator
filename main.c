@@ -4,21 +4,6 @@
 #include <string.h>
 #include "variables.h"
 
-
-
-byte b_read(adr a);         // читает из "старой памяти" mem байт с "адресом" a.
-void b_write(adr a, byte val); // пишет значение val в "старую память" mem в байт с "адресом" a.
-word w_read(adr a);        // читает из "старой памяти" mem слово с "адресом" a.
-void w_write(adr a, word val); // пишет значение val в "старую память" mem в слово с "адресом" a.
-int load_file();
-adr_n *f_load_file();
-void mem_dump(adr start, word n);
-void f_mem_dump(adr start, word n, char* s);
-int take_mnem(word comm);
-void do_command(word comm);
-command take_com(word x);
-void print_all();
-
 int main(int argc, char **argv) {
     FILE *g = fopen("param.txt", "r");
     char *param = malloc(100 * sizeof(char));
@@ -30,8 +15,9 @@ int main(int argc, char **argv) {
         printf("< %s > is not an executable command\n", param);
     free(param);
     fclose(g);
-
-    adr_n * an = f_load_file();
+    FILE *fi = fopen("load.txt", "r");
+    adr_n * an = f_load_file(fi);
+    fclose(fi);
     f_mem_dump(an->ad, (word) an->n, "load_out.txt");
     f = fopen("load_out_res.txt", "w");
     if(t)
@@ -44,6 +30,9 @@ int main(int argc, char **argv) {
             print_all();
             fprintf(f, "\n");
         }
+        schet ++;
+        if(schet > 32*1000)
+            break;
     }
     free(an);
     fclose(f);

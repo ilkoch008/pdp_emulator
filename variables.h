@@ -10,6 +10,7 @@ typedef unsigned short int word;
 typedef word adr;
 
 int N, Z, V, C;
+unsigned int schet; // счётчик для циклов
 
 typedef union s_byte{
     char sby;
@@ -60,5 +61,30 @@ typedef struct comm {
     word reg1; // first register ( [0;7] if needed)
     word reg2; // second register ( [0;7] if needed)
 } command;
+
+byte b_read(adr a);         // читает из "старой памяти" mem байт с "адресом" a.
+void b_write(adr a, byte val); // пишет значение val в "старую память" mem в байт с "адресом" a.
+word w_read(adr a);        // читает из "старой памяти" mem слово с "адресом" a.
+void w_write(adr a, word val); // пишет значение val в "старую память" mem в слово с "адресом" a.
+int load_file();
+adr_n *f_load_file(FILE * fi);
+void mem_dump(adr start, word n);
+void f_mem_dump(adr start, word n, char* s);
+int take_mnem(word comm);
+void do_command(word comm);
+command take_com(word x);
+void print_all();
+void f_mem_dump(adr start, word n, char* s);
+void f_mem_dump_1(adr start, word n, char* s);
+word take(word ad_mode, word regi, word B);
+word read(adr a, word B);
+
+typedef struct func{
+    word msk; // opcode
+    word opc; // mask
+    int (*instr)(command com); //указателль на функцию
+} func;
+
+func func_list[100];
 
 #endif //TEST_3_VARIABLES_H

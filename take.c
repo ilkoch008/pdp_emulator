@@ -8,28 +8,6 @@
 #include <string.h>
 #include "variables.h"
 
-byte b_read(adr a);         // читает из "старой памяти" mem байт с "адресом" a.
-void b_write(adr a, byte val); // пишет значение val в "старую память" mem в байт с "адресом" a.
-word w_read(adr a);        // читает из "старой памяти" mem слово с "адресом" a.
-void w_write(adr a, word val); // пишет значение val в "старую память" mem в слово с "адресом" a.
-int load_file();
-
-adr_n *f_load_file();
-
-void mem_dump(adr start, word n);
-
-void f_mem_dump(adr start, word n, char *s);
-
-int take_mnem(word comm);
-
-void do_command(word comm);
-
-command take_com(word x);
-
-void print_all();
-
-word read(adr a, word B);
-
 word take(word ad_mode, word regi, word B) {
     switch (ad_mode) {
         case 0:
