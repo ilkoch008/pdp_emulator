@@ -10,7 +10,16 @@ typedef unsigned short int word;
 typedef word adr;
 
 int N, Z, V, C;
-unsigned int schet; // счётчик для циклов
+// N indicating a negative value
+// Z indicating a zero (equal) condition
+// V indicating an overflow condition, and
+// C indicating a carry condition.
+
+unsigned int schet; // счётчик выполненных команд
+
+#define ostat mem[0177564]
+#define odata mem[0177566]
+
 
 typedef union s_byte{
     char sby;
@@ -21,11 +30,6 @@ typedef union s_word{
     short int si;
     unsigned short int ui;
 } s_word;
-
-// N indicating a negative value
-// Z indicating a zero (equal) condition
-// V indicating an overflow condition, and
-// C indicating a carry condition.
 
 s_byte xx;
 s_word yy;
@@ -71,7 +75,7 @@ adr_n *f_load_file(FILE * fi);
 void mem_dump(adr start, word n);
 void f_mem_dump(adr start, word n, char* s);
 int take_mnem(word comm);
-void do_command(word comm);
+int do_command(word comm);
 command take_com(word x);
 void print_all();
 void f_mem_dump(adr start, word n, char* s);

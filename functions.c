@@ -22,6 +22,9 @@ byte b_read(adr a) {
 
 void b_write(adr a, byte val) {
     mem[a] = val;
+    if(a == 0177566){
+        fprintf(f, "%c", odata);
+    }
 }
 
 word w_read(adr a) {
@@ -159,44 +162,64 @@ command take_com(word x) {
     return res;
 }
 
-word push_dst(command com, word x){
+word push_dst(command com, word x) {
     switch (com.pc_mode_dst) {
         case 0:
-            if(t)
+            if (t)
                 fprintf(f, "R%o ", com.reg2);
             reg[com.reg2] = x;
             break;
         case 2:
-           // reg[com.reg1] += 2;
-            //if(t)
-            //    fprintf(f, "#%o ", w_read(reg[com.reg2]));
-            w_write(reg[com.reg1], x);
-           // reg[com.reg1] -= 2;
+            if (com.reg2 == 7 || com.B == 0) {
+                if (t)
+                    fprintf(f, "#%o ", w_read(reg[com.reg2]));
+                reg[com.reg2] += 2;
+                w_write(reg[com.reg1], x);
+            } else {
+                if (t)
+                    fprintf(f, "#%o ", b_read(reg[com.reg2]));
+                reg[com.reg2]++;
+                b_write((byte) (reg[com.reg2] - 1), (byte) x);
+            }
             break;
         case 3:
-          //  reg[com.reg1] += 2;
-            //if (t)
-            //    fprintf(f, "@#%o", w_read(reg[com.reg1]));
-            w_write(w_read(reg[com.reg1]), x);
-          //  reg[com.reg1] -= 2;
+            if (com.reg2 == 7 || com.B == 0) {
+                reg[com.reg2] += 2;
+                if (com.B) {
+                    if (t)
+                        fprintf(f, "@#%o", w_read((word) (reg[com.reg2] - 2)));
+                    b_write(w_read((word) (reg[com.reg2] - 2)), (byte) x);
+                } else {
+                    if (t)
+                        fprintf(f, "@#%o", w_read((word) (reg[com.reg2] - 2)));
+                    w_write(w_read((word) (reg[com.reg2] - 2)), x);
+                }
+            } else {
+                reg[com.reg2]++;
+                if (t)
+                    fprintf(f, "@#%o", w_read((word) (reg[com.reg2] - 1)));
+                b_write(w_read((word) (reg[com.reg2] - 1)), (byte) x);
+            }
+            //  reg[com.reg1] -= 2;
             break;
         case 6:
-          //  reg[com.reg1] += 2;
-            w_write((word)(reg[com.reg1] + w_read(reg[com.reg1])), x);
-          //  reg[com.reg1] -= 2;
+            //  reg[com.reg1] += 2;
+            w_write((word) (reg[com.reg1] + w_read(reg[com.reg1])), x);
+            //  reg[com.reg1] -= 2;
             break;
         case 7:
-          //  reg[com.reg1] += 2;
-            w_write(w_read((word)(reg[com.reg1] + w_read(reg[com.reg1]))), x);
-          //  reg[com.reg1] -= 2;
+            //  reg[com.reg1] += 2;
+            w_write(w_read((word) (reg[com.reg1] + w_read(reg[com.reg1]))), x);
+            //  reg[com.reg1] -= 2;
             break;
         default:
             fprintf(f, "DEFAULT EXIT (push_dst)\n");
             break;
     }
+
 }
 
-void do_command(word comm) {
+int do_command(word comm) {
 
     if (comm == 0) {
         if(t)
@@ -205,7 +228,7 @@ void do_command(word comm) {
         fprintf(f, "r0=%06o r2=%06o r4=%06o sp=%06o\n", reg[0], reg[2], reg[4], reg[6]);
         fprintf(f, "r1=%06o r3=%06o r5=%06o pc=%06o\n", reg[1], reg[3], reg[5], reg[7]);
         fprintf(f, "N=%06o  Z=%06o  V=%06o  C=%06o\n", N, Z, V, C);
-        exit(0);
+        return 1;
     }
     word save = comm;
     command com = take_com(comm);
@@ -223,7 +246,7 @@ void do_command(word comm) {
                 break;
         }
     }
-
+    return 0;
 }
 
 int sob(command com){
@@ -318,7 +341,11 @@ int bpl(command com) {
         xx.uby = com.offset;
         reg[7] += 2 * xx.sby;
         return 0;
-    } else { return 1; }
+    } else if (N == 1 && com.B == 1) {
+        return 0;
+    } else {
+        return 1;
+    }
 }
 
 int nothing(command com){

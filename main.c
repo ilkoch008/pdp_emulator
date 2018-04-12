@@ -20,12 +20,16 @@ int main(int argc, char **argv) {
     fclose(fi);
     f_mem_dump(an->ad, (word) an->n, "load_out.txt");
     f = fopen("load_out_res.txt", "w");
+    ostat = 0377;
+    int test;
     if(t)
         fprintf(f, "TRACE \n \n");
-    for (reg[7] = an->ad; reg[7] < an->ad + an->n; ) {
+    for (reg[7] = an->ad; ; ) {
         if(t)
             fprintf(f, "%06o : %06o  ", reg[7], w_read(reg[7]));
-        do_command(w_read(reg[7]));
+        test = do_command(w_read(reg[7]));
+        if(test == 1)
+            break;
         if(t) {
             print_all();
             fprintf(f, "\n");

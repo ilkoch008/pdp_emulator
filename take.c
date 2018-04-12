@@ -27,12 +27,26 @@ word take(word ad_mode, word regi, word B) {
                 return read((word)(reg[regi]-1), B);
             }
         case 3:
-            if (regi == 7) {
+            if (regi == 7 || B == 0) {
                 reg[regi] += 2;
-                yy.ui = read(w_read((word)(reg[regi] - 2)), B);
+//                if(w_read((word)(reg[regi] - 2)) == 0177564)
+//                    ostat = 0377;
+                if(B){
+                    xx.uby = (byte)read(w_read((word)(reg[regi] - 2)), B);
+                    if (t)
+                        fprintf(f, "@#%o ", xx.uby);
+                    return xx.uby;
+                } else {
+                    yy.ui = read(w_read((word) (reg[regi] - 2)), B);
+                }
             } else {
                 reg[regi]++;
-                yy.ui = read(w_read((word)(reg[regi]-1)), B);
+//                if(w_read((word)(reg[regi] - 1)) == 0177564)
+//                    ostat = 0377;
+                xx.uby = (byte)read(w_read((word)(reg[regi] - 1)), B);
+                if (t)
+                    fprintf(f, "@#%o ", xx.uby);
+                return xx.uby;
             }
             if (t)
                 fprintf(f, "@#%o ", yy.ui);
