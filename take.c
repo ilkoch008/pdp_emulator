@@ -14,6 +14,10 @@ word take(word ad_mode, word regi, word B) {
             if (t)
                 fprintf(f, "R%o ", regi);
             return reg[regi];
+        case 1:
+            if (t)
+                fprintf(f, "@%o ", regi);
+            return read(reg[regi], B);
         case 2:
             if (regi == 7 || B == 0) {
                 if (t)
@@ -51,9 +55,26 @@ word take(word ad_mode, word regi, word B) {
             if (t)
                 fprintf(f, "@#%o ", yy.ui);
             return yy.ui;
+        case 4:
+            if(t)
+                fprintf(f, "-(R%o)", regi);
+            if(B){
+                reg[regi]--;
+            } else {
+                reg[regi]-= 2;
+            }
+            return read(reg[regi], B);
+        case 5:
+            if(t)
+                fprintf(f, "@-(R%o)", regi);
+            reg[regi]-= 2;
+            return read(w_read(reg[regi]), B);
         case 6:
-            yy.ui = reg[7] + w_read(reg[7]);
-            return read(yy.ui, B);
+            if(t)
+                fprintf(f, "2(R%o)", regi);
+            yy.ui = (word)(reg[regi] + w_read(reg[regi]) + 2);
+            reg[regi]+= 2;
+            return yy.ui;
         case 7:
             yy.ui = reg[7] + w_read(reg[7]);
             return read(w_read(yy.ui), B);

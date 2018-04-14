@@ -23,7 +23,11 @@ byte b_read(adr a) {
 void b_write(adr a, byte val) {
     mem[a] = val;
     if(a == 0177566){
-        fprintf(f, "%c", odata);
+        if(t){
+            fprintf(f, " ---------------> %c", odata);
+        } else {
+            fprintf(f, "%c", odata);
+        }
     }
 }
 
@@ -44,6 +48,13 @@ word read(adr a, word B){
 void w_write(adr a, word val) {
     mem[a] = (byte) val;
     mem[a + 1] = (byte) (val >> 8);
+}
+
+void write(adr a, word B, word val){
+    if(B)
+        b_write(a, (byte) val);
+    else
+        w_write(a, val);
 }
 
 int load_file() {
@@ -169,6 +180,11 @@ word push_dst(command com, word x) {
                 fprintf(f, "R%o ", com.reg2);
             reg[com.reg2] = x;
             break;
+        case 1:
+            if (t)
+                fprintf(f, "@%o ", com.reg2);
+            write(reg[com.reg2], com.B, x);
+            break;
         case 2:
             if (com.reg2 == 7 || com.B == 0) {
                 if (t)
@@ -202,6 +218,19 @@ word push_dst(command com, word x) {
             }
             //  reg[com.reg1] -= 2;
             break;
+        case 4:
+            fprintf(f, "-(R%o)", com.reg2);
+            if(com.B){
+                reg[com.reg2]--;
+            } else {
+                reg[com.reg2]-= 2;
+            }
+            write(reg[com.reg2], com.B, x);
+            break;
+        case 5:
+            fprintf(f, "@-(R%o)", com.reg2);
+            reg[com.reg2]-= 2;
+            write(w_read(reg[com.reg2]), com.B, x);
         case 6:
             //  reg[com.reg1] += 2;
             w_write((word) (reg[com.reg1] + w_read(reg[com.reg1])), x);
@@ -342,16 +371,39 @@ int bpl(command com) {
         reg[7] += 2 * xx.sby;
         return 0;
     } else if (N == 1 && com.B == 1) {
+        if(t)
+            fprintf(f, "BPL ");
         return 0;
     } else {
         return 1;
     }
 }
 
+int jsr(command com){
+    if(t)
+        fprintf(f, "JSR ");
+    dst = take(com.pc_mode_dst, com.reg2, com.B);
+    w_write(reg[6], reg[com.opcode10_6]);
+    reg[6]-= 2;
+    reg[com.opcode10_6] = reg[7];
+    reg[7] = dst;
+    return 0;
+}
+
+int rts(command com){
+    if(t)
+        fprintf(f, "RTS ");
+    dst = (word)(com.offset - (1 << 7));
+    reg[7] = reg[dst];
+    reg[6]+= 2;
+    reg[dst] = w_read(reg[6]);
+    return 0;
+}
+
 int nothing(command com){
     if(t)
         fprintf(f, "Ha! loh, net tut takoy function\n ");
-    return 1;
+    return 0;
 }
 
 func func_list[100] =
@@ -363,5 +415,7 @@ func func_list[100] =
                 {0177400, 0000400, br},
                 {0177400, 0001400, beq},
                 {0177400, 0000000, bpl},
+                {0177000, 0004000, jsr},
+                {0177770, 0000200, rts},
                 {0000000, 0000000, nothing}
         };
