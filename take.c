@@ -8,76 +8,88 @@
 #include <string.h>
 #include "variables.h"
 
-word take(word ad_mode, word regi, word B) {
+vozvr take(word ad_mode, word regi, word B) {
+    vozvr res;
     switch (ad_mode) {
         case 0:
             if (t)
                 fprintf(f, "R%o ", regi);
-            return reg[regi];
+            res.adr = regi;
+            res.val = reg[regi];
+            return res;
         case 1:
             if (t)
                 fprintf(f, "@%o ", regi);
-            return read(reg[regi], B);
+            res.adr = reg[regi];
+            res.val = read(reg[regi], B);
+            return res;
         case 2:
             if (regi == 7 || B == 0) {
                 if (t)
                     fprintf(f, "#%o ", w_read(reg[regi]));
+                res.adr = reg[regi];
+                res.val = read(res.adr, B);
                 reg[regi] += 2;
-                return read((word)(reg[regi] - 2), B);
+                return res;
             } else {
                 if (t)
                     fprintf(f, "#%o ", b_read(reg[regi]));
+                res.adr = reg[regi];
+                res.val = read(res.adr, B);
                 reg[regi]++;
-                return read((word)(reg[regi]-1), B);
+                return res;
             }
         case 3:
+            res.adr = w_read(reg[regi]);
             if (regi == 7 || B == 0) {
                 reg[regi] += 2;
-//                if(w_read((word)(reg[regi] - 2)) == 0177564)
-//                    ostat = 0377;
-                if(B){
-                    xx.uby = (byte)read(w_read((word)(reg[regi] - 2)), B);
+                    res.val = (byte)read(w_read((word)(reg[regi] - 2)), B);
                     if (t)
-                        fprintf(f, "@#%o ", xx.uby);
-                    return xx.uby;
-                } else {
-                    yy.ui = read(w_read((word) (reg[regi] - 2)), B);
-                }
+                        fprintf(f, "@#%o ", res.val);
+                    return res;
             } else {
                 reg[regi]++;
-//                if(w_read((word)(reg[regi] - 1)) == 0177564)
-//                    ostat = 0377;
-                xx.uby = (byte)read(w_read((word)(reg[regi] - 1)), B);
+                res.val = (byte)read(w_read((word)(reg[regi] - 1)), B);
                 if (t)
-                    fprintf(f, "@#%o ", xx.uby);
-                return xx.uby;
+                    fprintf(f, "@#%o ", res.val);
+                return res;
             }
-            if (t)
-                fprintf(f, "@#%o ", yy.ui);
-            return yy.ui;
         case 4:
             if(t)
-                fprintf(f, "-(R%o)", regi);
+                fprintf(f, "-(R%o) ", regi);
             if(B){
                 reg[regi]--;
             } else {
                 reg[regi]-= 2;
             }
-            return read(reg[regi], B);
+            res.adr = reg[regi];
+            res.val = read(res.adr, B);
+            return res;
         case 5:
             if(t)
-                fprintf(f, "@-(R%o)", regi);
+                fprintf(f, "@-(R%o) ", regi);
             reg[regi]-= 2;
-            return read(w_read(reg[regi]), B);
+            res.adr = w_read(reg[regi]);
+            res.val = read(res.adr, B);
+            return res;
         case 6:
             if(t)
-                fprintf(f, "2(R%o)", regi);
-            yy.ui = (word)(reg[regi] + w_read(reg[regi]) + 2);
-            reg[regi]+= 2;
-            return yy.ui;
+                fprintf(f, "%o(R%o) ", w_read(reg[7]), regi);
+            if(regi == 7) {
+                res.adr = (word) (reg[regi] + w_read(reg[7]) + 2);
+                res.val = read(res.adr, B);
+                reg[7] += 2;
+            } else {
+                res.adr = reg[regi] + w_read(reg[7]);
+                res.val = read(res.adr, B);
+                reg[7]+= 2;
+            }
+            return res;
         case 7:
             yy.ui = reg[7] + w_read(reg[7]);
-            return read(w_read(yy.ui), B);
+            res.adr = w_read(yy.ui);
+            res.val = read(res.adr, B);
+            return res;
         default:
             fprintf(f, "DEFAULT EXIT (take) \n");
             break;

@@ -31,6 +31,14 @@ typedef union s_word{
     unsigned short int ui;
 } s_word;
 
+typedef struct vozvr{
+    word val;
+    word adr;
+}vozvr;
+
+vozvr DST;
+vozvr SRC;
+
 s_byte xx;
 s_word yy;
 s_word zz;
@@ -44,7 +52,6 @@ word reg[8];
 * 6 - Stack Pointer
 * 7 - Program Counter
 */
-
 
 typedef struct adr_n { // для возврата адреса и числа байтов из
     adr ad; // из f_load_file
@@ -80,7 +87,7 @@ command take_com(word x);
 void print_all();
 void f_mem_dump(adr start, word n, char* s);
 void f_mem_dump_1(adr start, word n, char* s);
-word take(word ad_mode, word regi, word B);
+vozvr take(word ad_mode, word regi, word B);
 word read(adr a, word B);
 
 typedef struct func{
