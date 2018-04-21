@@ -58,7 +58,7 @@ void w_write(adr a, word val) {
     }
 }
 
-void write(adr a, word B, word val){
+void write(adr a, word val, word B){
     if(B)
         b_write(a, (byte) val);
     else
@@ -183,8 +183,10 @@ command take_com(word x) {
 
 
 int do_command(word comm) {
-
-    if (comm == 0) {
+    word save = comm;
+    command com = take_com(comm);
+    reg[7] += 2;
+    if (save == 0) {
         if(t)
             fprintf(f, "HALT \n");
         fprintf(f, "\n--------------- halted ---------------\n");
@@ -193,9 +195,6 @@ int do_command(word comm) {
         fprintf(f, "N=%06o  Z=%06o  V=%06o  C=%06o\n", N, Z, V, C);
         return 1;
     }
-    word save = comm;
-    command com = take_com(comm);
-    reg[7] += 2;
     word BB;
     BB = (save >> 15);
     save = save -  (BB << 15);
@@ -248,10 +247,12 @@ int mov(command com){
 }
 
 int add(command com){
+    if(com.B == 1)
+        return 1;
     if(t)
         fprintf(f, "ADD ");
-    DST = take(com.pc_mode_dst, com.reg2, com.B);
     SRC = take(com.pc_mode_src, com.reg1, com.B);
+    DST = take(com.pc_mode_dst, com.reg2, com.B);
     yy.ui = DST.val;
     zz.ui = SRC.val;
     short int save = yy.si;
@@ -354,6 +355,142 @@ int clr(command com){
     DST = take(com.pc_mode_dst, com.reg2, com.B);
     N = 0; Z = 1; V = 0; C = 0;
     w_write(DST.adr, 0);
+    return 0;
+}
+
+int mul(command com){
+    if(t) {
+        fprintf(f, "MUL ");
+    }
+    DST = take(com.pc_mode_dst, com.reg2, com.B);
+    SRC = take(com.opcode11_9, com.reg1, com.B);
+    yy.ui = DST.val;
+    zz.ui = SRC.val;
+    un_int res;
+    res.si = yy.si * zz.si;
+    if(res.ui > 0b1111111111111111) {
+        V = 1;
+        fprintf(f, " << OVERFLOW >> ");
+        return 0;
+    }
+    if(com.reg1 % 2 == 0){
+        reg[com.reg1] = (word)(res.ui >> 16);
+        reg[com.reg1+1] = (word)((res.ui << 16)>>16);
+    }
+    else {
+        reg[com.reg1] = (word)((res.ui << 16)>>16);
+    }
+    return 0;
+}
+
+int dec(command com){
+    if(t) {
+        fprintf(f, "DEC");
+        if(com.B)
+            fprintf(f, "B ");
+        else
+            fprintf(f, " ");
+    }
+    DST = take(com.pc_mode_dst, com.reg2, com.B);
+    DST.val--;
+    write(DST.adr, DST.val, com.B);
+    return 0;
+}
+
+int inc(command com){
+    if(t) {
+        fprintf(f, "INC");
+        if(com.B)
+            fprintf(f, "B ");
+        else
+            fprintf(f, " ");
+    }
+    DST = take(com.pc_mode_dst, com.reg2, com.B);
+    DST.val++;
+    write(DST.adr, DST.val, com.B);
+    return 0;
+}
+
+int bne(command com){
+    if(t)
+        fprintf(f, "BNE ");
+    if(Z == 0) {
+        xx.uby = com.offset;
+        reg[7] += 2 * xx.sby;
+    }
+    return 0;
+}
+
+int d_div(command com){
+    if(t) fprintf(f, "DIV ");
+    DST = take(com.pc_mode_dst, com.reg2, com.B);
+    yy.ui = DST.val;
+    if(t) fprintf(f, "R%o ", com.reg1);
+    if(com.reg1 % 2 == 0){
+        un_int numer;
+        numer.ui = (reg[com.reg1]<<16) + reg[com.reg1+1];
+        un_int quot;
+        quot.si = numer.si / yy.si;
+        if(quot.ui > 0b1111111111111111) {
+            V = 1;
+            fprintf(f, " << OVERFLOW >> ");
+            return 0;
+        }
+        reg[com.reg1] = (word)quot.ui;
+        reg[com.reg1+1] = (word)(numer.si % yy.si);
+    } else {
+        short int save;
+        save = yy.si;
+        zz.ui = reg[com.reg1];
+        yy.si = zz.si / yy.si;
+        reg[com.reg1-1] = yy.ui;
+        yy.si = zz.si % save;
+        reg[com.reg1] = yy.ui;
+        return 0;
+    }
+    return 0;
+}
+
+int sub(command com){
+    if(t)
+        fprintf(f, "SUB ");
+    SRC = take(com.pc_mode_src, com.reg1, com.B);
+    DST = take(com.pc_mode_dst, com.reg2, com.B);
+    yy.ui = SRC.val;
+    Z = yy.si == 0 ? 1 : 0;
+    zz.ui = DST.val;
+    zz.si = zz.si - yy.si;
+    N = zz.si < 0 ? 1 : 0;
+    w_write(DST.adr, zz.ui);
+    return 0;
+}
+
+int cmp(command com){
+    if(t && com.B)
+        fprintf(f, "CMPB ");
+    else if(t)
+        fprintf(f, "CMP ");
+    SRC = take(com.pc_mode_src, com.reg1, com.B);
+    yy.ui = SRC.val;
+    DST = take(com.pc_mode_dst, com.reg2, com.B);
+    zz.ui = DST.val;
+    yy.si = yy.si - zz.si;
+    N = yy.si < 0 ? 1 : 0;
+    Z = yy.si == 0 ? 1 : 0;
+    V = 0; C = 0;
+    return 0;
+}
+
+int jmp(command com){
+    if(t)
+        fprintf(f, "JMP ");
+    word ad_mode, re;
+    com.offset = (unsigned char)(com.offset - (1 << 6));
+    ad_mode = (word)(com.offset >> 3);
+    re = (word)(com.offset & 7);
+    DST = take(ad_mode, re, 0);
+    reg[7] = DST.adr;
+    return 0;
 }
 
 func func_list[100] =
@@ -362,11 +499,19 @@ func func_list[100] =
                 {0170000, 0010000, mov},
                 {0170000, 0060000, add},
                 {0177700, 0005700, tst},
-                {0177400, 0000400, br},
+                {0177400, 0000400,  br},
                 {0177400, 0001400, beq},
                 {0177400, 0000000, bpl},
                 {0177000, 0004000, jsr},
                 {0177770, 0000200, rts},
                 {0177700, 0005000, clr},
+                {0177000, 0070000, mul},
+                {0177700, 0005300, dec},
+                {0177700, 0005200, inc},
+                {0177400, 0001000, bne},
+                {0177000, 0071000, d_div},
+                {0170000, 0060000, sub},
+                {0170000, 0020000, cmp},
+                {0177700, 0000100, jmp},
                 {0000000, 0000000, nothing}
         };

@@ -19,21 +19,23 @@ vozvr take(word ad_mode, word regi, word B) {
             return res;
         case 1:
             if (t)
-                fprintf(f, "@%o ", regi);
+                fprintf(f, "@R%o ", regi);
             res.adr = reg[regi];
             res.val = read(reg[regi], B);
             return res;
         case 2:
             if (regi == 7 || B == 0) {
-                if (t)
+                if (t && regi == 7)
                     fprintf(f, "#%o ", w_read(reg[regi]));
+                else if(t)
+                    fprintf(f, "(R%o)+ ", regi);
                 res.adr = reg[regi];
                 res.val = read(res.adr, B);
                 reg[regi] += 2;
                 return res;
             } else {
                 if (t)
-                    fprintf(f, "#%o ", b_read(reg[regi]));
+                    fprintf(f, "(R%o)+ ", regi);
                 res.adr = reg[regi];
                 res.val = read(res.adr, B);
                 reg[regi]++;
@@ -73,8 +75,10 @@ vozvr take(word ad_mode, word regi, word B) {
             res.val = read(res.adr, B);
             return res;
         case 6:
-            if(t)
-                fprintf(f, "%o(R%o) ", w_read(reg[7]), regi);
+            if(t) {
+                yy.ui = w_read(reg[7]);
+                fprintf(f, "%d(R%o) ", yy.si, regi);
+            }
             if(regi == 7) {
                 res.adr = (word) (reg[regi] + w_read(reg[7]) + 2);
                 res.val = read(res.adr, B);

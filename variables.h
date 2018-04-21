@@ -31,6 +31,11 @@ typedef union s_word{
     unsigned short int ui;
 } s_word;
 
+typedef union un_int{
+    unsigned int ui;
+    int si;
+} un_int;
+
 typedef struct vozvr{
     word val;
     word adr;
@@ -91,8 +96,8 @@ vozvr take(word ad_mode, word regi, word B);
 word read(adr a, word B);
 
 typedef struct func{
-    word msk; // opcode
-    word opc; // mask
+    word msk; // mask
+    word opc; // opcode
     int (*instr)(command com); //указателль на функцию
 } func;
 

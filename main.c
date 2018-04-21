@@ -24,7 +24,7 @@ int main(int argc, char **argv) {
     int test;
     if(t)
         fprintf(f, "TRACE \n \n");
-    for (reg[7] = an->ad; ; ) {
+    for (reg[7] = 01000; ; ) {
         if(t)
             fprintf(f, "%06o : %06o  ", reg[7], w_read(reg[7]));
         test = do_command(w_read(reg[7]));
