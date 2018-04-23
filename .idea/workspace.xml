@@ -12,23 +12,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d603b4a3-be9e-447a-9ed3-25a24c7abc05" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/test_3.dir/functions.c.obj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/test_3.dir/main.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/test_3.dir/main.c.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/test_3.dir/objects.a" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/test_3.dir/objects.a" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/test_3.dir/take.c.obj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/load.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/load.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/load_out.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/load_out.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/load_out_res.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/load_out_res.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/test3.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/test_3.exe" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/test_3.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/tests1.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/tests2.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/functions.c" beforeDir="false" afterPath="$PROJECT_DIR$/functions.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/take.c" beforeDir="false" afterPath="$PROJECT_DIR$/take.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/13_div/div.pdp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/variables.h" beforeDir="false" afterPath="$PROJECT_DIR$/variables.h" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -65,8 +49,8 @@
       <file leaf-file-name="functions.c" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/functions.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="127">
-              <caret line="189" column="13" lean-forward="true" selection-start-line="189" selection-start-column="13" selection-end-line="189" selection-end-column="13" />
+            <state relative-caret-position="293">
+              <caret line="444" column="30" lean-forward="true" selection-start-line="444" selection-start-column="30" selection-end-line="444" selection-end-column="30" />
               <folding>
                 <element signature="e#41#59#0" expanded="true" />
                 <element signature="e#144#514#0" />
@@ -96,7 +80,6 @@
                 <element signature="e#9010#9038#0" />
                 <element signature="e#9313#9341#0" />
                 <element signature="e#9588#9616#0" />
-                <element signature="e#9907#10343#0" />
                 <element signature="e#10771#10799#0" />
               </folding>
             </state>
@@ -185,7 +168,7 @@
   <component name="NodePackageJsonFileManager">
     <packageJsonPaths />
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds">
     <option name="x" value="683" />
     <option name="width" value="683" />
     <option name="height" value="728" />
@@ -270,7 +253,7 @@
       <workItem from="1522603934287" duration="17491000" />
       <workItem from="1522697190135" duration="49952000" />
       <workItem from="1523642802838" duration="13975000" />
-      <workItem from="1523726923908" duration="44443000" />
+      <workItem from="1523726923908" duration="46281000" />
     </task>
     <task id="LOCAL-00001" summary="first push">
       <created>1521572316634</created>
@@ -311,17 +294,17 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="223293000" />
+    <option name="totallyTimeSpent" value="225131000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
+    <frame x="683" y="0" width="683" height="728" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.010248902" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.020989506" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info active="true" anchor="bottom" id="Messages" order="7" sideWeight="0.45973647" visible="true" weight="0.32857144" />
+      <window_info active="true" anchor="bottom" id="Messages" order="7" sideWeight="0.4587706" visible="true" weight="0.33713356" />
       <window_info anchor="bottom" id="CMake" order="7" />
-      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.54026353" side_tool="true" visible="true" weight="0.32857144" />
+      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.54122937" side_tool="true" visible="true" weight="0.33713356" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4797601" weight="0.0" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -479,7 +462,6 @@
             <element signature="e#9010#9038#0" />
             <element signature="e#9313#9341#0" />
             <element signature="e#9588#9616#0" />
-            <element signature="e#9907#10343#0" />
             <element signature="e#10771#10799#0" />
           </folding>
         </state>
@@ -556,7 +538,6 @@
             <element signature="e#9010#9038#0" />
             <element signature="e#9313#9341#0" />
             <element signature="e#9588#9616#0" />
-            <element signature="e#9907#10343#0" />
             <element signature="e#10771#10799#0" />
           </folding>
         </state>
@@ -626,7 +607,6 @@
             <element signature="e#9010#9038#0" />
             <element signature="e#9313#9341#0" />
             <element signature="e#9588#9616#0" />
-            <element signature="e#9907#10343#0" />
             <element signature="e#10771#10799#0" />
           </folding>
         </state>
@@ -696,7 +676,6 @@
             <element signature="e#9010#9038#0" />
             <element signature="e#9313#9341#0" />
             <element signature="e#9588#9616#0" />
-            <element signature="e#9907#10343#0" />
             <element signature="e#10771#10799#0" />
           </folding>
         </state>
@@ -766,7 +745,6 @@
             <element signature="e#9010#9038#0" />
             <element signature="e#9313#9341#0" />
             <element signature="e#9588#9616#0" />
-            <element signature="e#9907#10343#0" />
             <element signature="e#10771#10799#0" />
           </folding>
         </state>
@@ -812,7 +790,6 @@
             <element signature="e#9010#9038#0" />
             <element signature="e#9313#9341#0" />
             <element signature="e#9588#9616#0" />
-            <element signature="e#9907#10343#0" />
             <element signature="e#10771#10799#0" />
           </folding>
         </state>
@@ -882,7 +859,6 @@
             <element signature="e#9010#9038#0" />
             <element signature="e#9313#9341#0" />
             <element signature="e#9588#9616#0" />
-            <element signature="e#9907#10343#0" />
             <element signature="e#10771#10799#0" />
           </folding>
         </state>
@@ -1031,8 +1007,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/functions.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="127">
-          <caret line="189" column="13" lean-forward="true" selection-start-line="189" selection-start-column="13" selection-end-line="189" selection-end-column="13" />
+        <state relative-caret-position="293">
+          <caret line="444" column="30" lean-forward="true" selection-start-line="444" selection-start-column="30" selection-end-line="444" selection-end-column="30" />
           <folding>
             <element signature="e#41#59#0" expanded="true" />
             <element signature="e#144#514#0" />
@@ -1062,7 +1038,6 @@
             <element signature="e#9010#9038#0" />
             <element signature="e#9313#9341#0" />
             <element signature="e#9588#9616#0" />
-            <element signature="e#9907#10343#0" />
             <element signature="e#10771#10799#0" />
           </folding>
         </state>

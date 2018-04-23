@@ -440,12 +440,12 @@ int d_div(command com){
         reg[com.reg1+1] = (word)(numer.si % yy.si);
     } else {
         short int save;
-        save = yy.si;
+//        save = yy.si;
         zz.ui = reg[com.reg1];
         yy.si = zz.si / yy.si;
-        reg[com.reg1-1] = yy.ui;
-        yy.si = zz.si % save;
         reg[com.reg1] = yy.ui;
+//        yy.si = zz.si % save;
+//        reg[com.reg1] = yy.ui;
         return 0;
     }
     return 0;
