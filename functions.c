@@ -12,8 +12,16 @@ void print_all() {
     fprintf(f, "\n------------ print all ------------\n");
     fprintf(f, "r0=%06o r2=%06o r4=%06o sp=%06o\n", reg[0], reg[2], reg[4], reg[6]);
     fprintf(f, "r1=%06o r3=%06o r5=%06o pc=%06o\n", reg[1], reg[3], reg[5], reg[7]);
-    fprintf(f, "N=%06o  Z=%06o  V=%06o  C=%06o\n", N, Z, V, C);
+    fprintf(f, "N= %06o Z= %06o V= %06o C= %06o\n", N, Z, V, C);
     fprintf(f, "-----------------------------------\n");
+}
+
+void print_all_std() {
+    printf("\n------------ print all ------------\n");
+    printf("r0=%06o r2=%06o r4=%06o sp=%06o\n", reg[0], reg[2], reg[4], reg[6]);
+    printf("r1=%06o r3=%06o r5=%06o pc=%06o\n", reg[1], reg[3], reg[5], reg[7]);
+    printf("N= %06o Z= %06o V= %06o C= %06o\n", N, Z, V, C);
+    printf("-----------------------------------\n");
 }
 
 byte b_read(adr a) {
@@ -28,8 +36,12 @@ void b_write(adr a, byte val) {
         if (a == 0177566) {
             if (t) {
                 fprintf(f, " ---------------> %c", odata);
+                if(std)
+                    printf(" ---------------> %c", odata);
             } else {
                 fprintf(f, "%c", odata);
+                if(std)
+                    printf("%c", odata);
             }
         }
     }
@@ -187,12 +199,21 @@ int do_command(word comm) {
     command com = take_com(comm);
     reg[7] += 2;
     if (save == 0) {
-        if(t)
+        if(t) {
             fprintf(f, "HALT \n");
+            if(std)
+                printf("HALT \n");
+        }
         fprintf(f, "\n--------------- halted ---------------\n");
         fprintf(f, "r0=%06o r2=%06o r4=%06o sp=%06o\n", reg[0], reg[2], reg[4], reg[6]);
         fprintf(f, "r1=%06o r3=%06o r5=%06o pc=%06o\n", reg[1], reg[3], reg[5], reg[7]);
-        fprintf(f, "N=%06o  Z=%06o  V=%06o  C=%06o\n", N, Z, V, C);
+        fprintf(f, "N= %06o Z= %06o V= %06o C= %06o\n", N, Z, V, C);
+        if(std){
+            printf("\n--------------- halted ---------------\n");
+            printf("r0=%06o r2=%06o r4=%06o sp=%06o\n", reg[0], reg[2], reg[4], reg[6]);
+            printf("r1=%06o r3=%06o r5=%06o pc=%06o\n", reg[1], reg[3], reg[5], reg[7]);
+            printf("N= %06o Z= %06o V= %06o C= %06o\n", N, Z, V, C);
+        }
         return 1;
     }
     word BB;
@@ -212,8 +233,11 @@ int do_command(word comm) {
 }
 
 int sob(command com){
-    if(t)
+    if(t) {
         fprintf(f, "SOB ");
+        if(std)
+            printf("SOB ");
+    }
     reg[com.reg1]--;
     if(reg[com.reg1] > 0)
         reg[7]-= 2*(com.reg2 + 8*com.pc_mode_dst);
@@ -221,11 +245,17 @@ int sob(command com){
 }
 
 int mov(command com){
-    if (t)
+    if (t) {
         fprintf(f, "MOV");
+        if(std)
+            printf("MOV");
+    }
     if (com.B == 0) {
-        if (t)
+        if (t) {
             fprintf(f, " ");
+            if(std)
+                printf(" ");
+        }
         SRC = take(com.pc_mode_src, com.reg1, com.B);
         DST = take(com.pc_mode_dst, com.reg2, com.B);
         yy.ui = SRC.val;
@@ -234,8 +264,11 @@ int mov(command com){
         w_write(DST.adr, SRC.val);
 
     } else {
-        if (t)
+        if (t) {
             fprintf(f, "B ");
+            if(std)
+                printf("B ");
+        }
         SRC = take(com.pc_mode_src, com.reg1, com.B);
         DST = take(com.pc_mode_dst, com.reg2, com.B);
         xx.uby = (byte)SRC.val;
@@ -249,8 +282,11 @@ int mov(command com){
 int add(command com){
     if(com.B == 1)
         return 1;
-    if(t)
+    if(t) {
         fprintf(f, "ADD ");
+        if(std)
+            printf("ADD ");
+    }
     SRC = take(com.pc_mode_src, com.reg1, com.B);
     DST = take(com.pc_mode_dst, com.reg2, com.B);
     yy.ui = DST.val;
@@ -268,16 +304,22 @@ int add(command com){
 
 int tst(command com){
     if(com.B){ // TSTB
-        if(t)
+        if(t) {
             fprintf(f, "TSTB ");
+            if(std)
+                printf("TSTB ");
+        }
         DST = take(com.pc_mode_dst, com.reg2, com.B);
         xx.uby = (byte)DST.val;
         N = xx.sby < 0 ? 1 : 0;
         Z = xx.sby == 0 ? 1 : 0;
         V = 0; C = 0;
     } else { // TST
-        if (t)
+        if (t) {
             fprintf(f, "TST ");
+            if(std)
+                printf("TST ");
+        }
         DST = take(com.pc_mode_dst, com.reg2, com.B);
         yy.ui = DST.val;
         N = yy.si < 0 ? 1 : 0;
@@ -289,16 +331,22 @@ int tst(command com){
 }
 
 int br(command com){
-    if(t)
+    if(t) {
         fprintf(f, "BR ");
+        if(std)
+            printf("BR ");
+    }
     xx.uby = com.offset;
     reg[7] += 2 * xx.sby;
     return 0;
 }
 
 int beq(command com){
-    if(t)
+    if(t) {
         fprintf(f, "BEQ ");
+        if(std)
+            printf("BEQ ");
+    }
     if(Z == 1) {
         xx.uby = com.offset;
         reg[7] += 2 * xx.sby;
@@ -308,14 +356,20 @@ int beq(command com){
 
 int bpl(command com) {
     if (N == 0 && com.B == 1) {
-        if(t)
+        if(t) {
             fprintf(f, "BPL ");
+            if(std)
+                printf("BPL ");
+        }
         xx.uby = com.offset;
         reg[7] += 2 * xx.sby;
         return 0;
     } else if (N == 1 && com.B == 1) {
-        if(t)
+        if(t) {
             fprintf(f, "BPL ");
+            if(std)
+                printf("BPL ");
+        }
         return 0;
     } else {
         return 1;
@@ -323,8 +377,11 @@ int bpl(command com) {
 }
 
 int jsr(command com){
-    if(t)
+    if(t) {
         fprintf(f, "JSR ");
+        if(std)
+            printf("JSR ");
+    }
     DST = take(com.pc_mode_dst, com.reg2, com.B);
     w_write(reg[6], reg[com.opcode10_6]);
     reg[6]-= 2;
@@ -334,8 +391,11 @@ int jsr(command com){
 }
 
 int rts(command com){
-    if(t)
+    if(t) {
         fprintf(f, "RTS ");
+        if(std)
+            printf("RTS ");
+    }
     dst = (word)(com.offset - (1 << 7));
     reg[7] = reg[dst];
     reg[6]+= 2;
@@ -344,14 +404,20 @@ int rts(command com){
 }
 
 int nothing(command com){
-    if(t)
+    if(t) {
         fprintf(f, "Ha! loh, net tut takoy function\n ");
+        if (std)
+            printf("Ha! loh, net tut takoy function\n");
+    }
     return 0;
 }
 
 int clr(command com){
-    if(t)
+    if(t) {
         fprintf(f, "CLR ");
+        if(std)
+            printf("CLR ");
+    }
     DST = take(com.pc_mode_dst, com.reg2, com.B);
     N = 0; Z = 1; V = 0; C = 0;
     w_write(DST.adr, 0);
@@ -361,6 +427,8 @@ int clr(command com){
 int mul(command com){
     if(t) {
         fprintf(f, "MUL ");
+        if(std)
+            printf("MUL ");
     }
     DST = take(com.pc_mode_dst, com.reg2, com.B);
     SRC = take(com.opcode11_9, com.reg1, com.B);
@@ -368,11 +436,10 @@ int mul(command com){
     zz.ui = SRC.val;
     un_int res;
     res.si = yy.si * zz.si;
-    if(res.ui > 0b1111111111111111) {
-        V = 1;
-        fprintf(f, " << OVERFLOW >> ");
-        return 0;
-    }
+    N = res.si < 0 ? 1 : 0;
+    Z = res.si == 0 ? 1 : 0;
+    C = (res.si * res.si < zz.si * zz.si || res.si * res.si < yy.si * yy.si) ? 1 : 0;
+    V = 0;
     if(com.reg1 % 2 == 0){
         reg[com.reg1] = (word)(res.ui >> 16);
         reg[com.reg1+1] = (word)((res.ui << 16)>>16);
@@ -390,9 +457,20 @@ int dec(command com){
             fprintf(f, "B ");
         else
             fprintf(f, " ");
+        if(std){
+            printf("DEC");
+            if(com.B)
+                printf("B ");
+            else
+                printf(" ");
+        }
     }
     DST = take(com.pc_mode_dst, com.reg2, com.B);
     DST.val--;
+    yy.ui = DST.val;
+    N = yy.si < 0 ? 1 : 0;
+    Z = yy.si == 0 ? 1 : 0;
+    V = (yy.ui+1) == 01000000 ? 1 : 0;
     write(DST.adr, DST.val, com.B);
     return 0;
 }
@@ -404,16 +482,29 @@ int inc(command com){
             fprintf(f, "B ");
         else
             fprintf(f, " ");
+        if(std){
+            printf("INC");
+            if(com.B)
+                printf("B ");
+            else
+                printf(" ");
+        }
     }
     DST = take(com.pc_mode_dst, com.reg2, com.B);
     DST.val++;
+    N = yy.si < 0 ? 1 : 0;
+    Z = yy.si == 0 ? 1 : 0;
+    V = (yy.ui-1) == 00777777 ? 1 : 0;
     write(DST.adr, DST.val, com.B);
     return 0;
 }
 
 int bne(command com){
-    if(t)
+    if(t) {
         fprintf(f, "BNE ");
+        if(std)
+            printf("BNE ");
+    }
     if(Z == 0) {
         xx.uby = com.offset;
         reg[7] += 2 * xx.sby;
@@ -422,15 +513,26 @@ int bne(command com){
 }
 
 int d_div(command com){
-    if(t) fprintf(f, "DIV ");
+    if(t){
+        fprintf(f, "DIV ");
+        if(std)
+            printf("DIV ");
+    }
     DST = take(com.pc_mode_dst, com.reg2, com.B);
     yy.ui = DST.val;
+    if(yy.si == 0){
+        C = 1;
+        V = 1;
+        goto DIV_SKIP;
+    }
+    V = 0;
     if(t) fprintf(f, "R%o ", com.reg1);
     if(com.reg1 % 2 == 0){
         un_int numer;
         numer.ui = (reg[com.reg1]<<16) + reg[com.reg1+1];
         un_int quot;
         quot.si = numer.si / yy.si;
+        Z = quot.si == 0 ? 1 : 0;
         if(quot.ui > 0b1111111111111111) {
             V = 1;
             fprintf(f, " << OVERFLOW >> ");
@@ -448,28 +550,38 @@ int d_div(command com){
 //        reg[com.reg1] = yy.ui;
         return 0;
     }
+    DIV_SKIP:
     return 0;
 }
 
 int sub(command com){
-    if(t)
+    if(t) {
         fprintf(f, "SUB ");
+        if(std)
+            printf("SUB ");
+    }
     SRC = take(com.pc_mode_src, com.reg1, com.B);
     DST = take(com.pc_mode_dst, com.reg2, com.B);
     yy.ui = SRC.val;
-    Z = yy.si == 0 ? 1 : 0;
     zz.ui = DST.val;
     zz.si = zz.si - yy.si;
     N = zz.si < 0 ? 1 : 0;
+    Z = zz.si == 0 ? 1 : 0;
     w_write(DST.adr, zz.ui);
     return 0;
 }
 
 int cmp(command com){
-    if(t && com.B)
+    if(t && com.B) {
         fprintf(f, "CMPB ");
-    else if(t)
+        if(std)
+            printf("CMPB ");
+    }
+    else if(t) {
         fprintf(f, "CMP ");
+        if(std)
+            printf("CMP ");
+    }
     SRC = take(com.pc_mode_src, com.reg1, com.B);
     yy.ui = SRC.val;
     DST = take(com.pc_mode_dst, com.reg2, com.B);
@@ -482,14 +594,73 @@ int cmp(command com){
 }
 
 int jmp(command com){
-    if(t)
+    if(t) {
         fprintf(f, "JMP ");
+        if(std)
+            printf("JMP ");
+    }
     word ad_mode, re;
     com.offset = (unsigned char)(com.offset - (1 << 6));
     ad_mode = (word)(com.offset >> 3);
     re = (word)(com.offset & 7);
     DST = take(ad_mode, re, 0);
     reg[7] = DST.adr;
+    return 0;
+}
+
+int asr(command com){
+    if(t && com.B){
+        fprintf(f, "ASRB ");
+        if(std)
+            printf("ASRB ");
+    }
+    else if(t){
+        fprintf(f, "ASR ");
+        if(std)
+            printf("ASR ");
+    }
+    DST = take(com.pc_mode_dst, com.reg2, com.B);
+    if(com.B){
+        xx.uby = (byte)DST.val;
+        C = xx.uby % 2;
+        xx.sby = (xx.sby >> 1);
+        N = xx.sby < 0 ? 1 : 0;
+        Z = xx.sby == 0 ? 1 : 0;
+        V = N ^ Z;
+        yy.si = xx.sby;
+        write(DST.adr, yy.ui, com.B);
+        return 0;
+    } else {
+        yy.ui = DST.val;
+        C = yy.ui % 2;
+        yy.si = (yy.si >> 1);
+        N = yy.si < 0 ? 1 : 0;
+        Z = yy.si == 0 ? 1 : 0;
+        V = N ^ Z;
+        write(DST.adr, yy.ui, com.B);
+        return 0;
+    }
+}
+
+int bic(command com){
+    if(t && com.B){
+        fprintf(f, "BICB ");
+        if(std)
+            printf("BICB ");
+    }
+    else if(t){
+        fprintf(f, "BIC ");
+        if(std)
+            printf("BIC ");
+    }
+    SRC = take(com.pc_mode_src, com.reg1, com.B);
+    DST = take(com.pc_mode_dst, com.reg2, com.B);
+    DST.val &= ~SRC.val;
+    yy.ui = DST.val;
+    N = yy.si < 0 ? 1 : 0;
+    Z = yy.si == 0 ? 1 : 0;
+    V = 0;
+    write(DST.adr, DST.val, com.B);
     return 0;
 }
 
@@ -513,5 +684,7 @@ func func_list[100] =
                 {0170000, 0060000, sub},
                 {0170000, 0020000, cmp},
                 {0177700, 0000100, jmp},
+                {0177700, 0006200, asr},
+                {0170000, 0040000, bic},
                 {0000000, 0000000, nothing}
         };

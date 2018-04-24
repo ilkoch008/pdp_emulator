@@ -50,6 +50,7 @@ s_word zz;
 word src, dst;
 FILE * f;
 int t; // для трассировки
+int std; // режим вывода
 byte mem[64 * 1024];
 word reg[8];
 /*
@@ -90,6 +91,7 @@ int take_mnem(word comm);
 int do_command(word comm);
 command take_com(word x);
 void print_all();
+void print_all_std();
 void f_mem_dump(adr start, word n, char* s);
 void f_mem_dump_1(adr start, word n, char* s);
 vozvr take(word ad_mode, word regi, word B);
