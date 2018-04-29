@@ -1,6 +1,1 @@
--t
--file
-load.txt
-load_out.txt
-load_out_res.txt
-1000
+1000 -t -file load.txt load_out.txt out_res.txt 

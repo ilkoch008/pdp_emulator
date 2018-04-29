@@ -7,32 +7,20 @@
 #IncludeRegexTransform: 
 
 R:/progi/pdp_emulator/functions.c
-stdio.h
--
-stdlib.h
--
-assert.h
--
-string.h
--
 variables.h
 R:/progi/pdp_emulator/variables.h
 
 R:/progi/pdp_emulator/main.c
-stdio.h
--
-stdlib.h
--
-assert.h
--
-string.h
--
 variables.h
 R:/progi/pdp_emulator/variables.h
 
 R:/progi/pdp_emulator/rubbish.c
 
 R:/progi/pdp_emulator/take.c
+variables.h
+R:/progi/pdp_emulator/variables.h
+
+R:/progi/pdp_emulator/variables.h
 stdio.h
 -
 stdlib.h
@@ -41,8 +29,6 @@ assert.h
 -
 string.h
 -
-variables.h
-R:/progi/pdp_emulator/variables.h
-
-R:/progi/pdp_emulator/variables.h
+ctype.h
+-
 

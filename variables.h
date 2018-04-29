@@ -5,6 +5,12 @@
 #ifndef TEST_3_VARIABLES_H
 #define TEST_3_VARIABLES_H
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <string.h>
+#include <ctype.h>
+
 typedef unsigned char byte;
 typedef unsigned short int word;
 typedef word adr;
@@ -39,7 +45,12 @@ typedef union un_int{
 typedef struct vozvr{
     word val;
     word adr;
-}vozvr;
+} vozvr;
+
+typedef struct nom{
+    char * load[10];
+    word start;
+} nom;
 
 vozvr DST;
 vozvr SRC;
@@ -51,6 +62,7 @@ word src, dst;
 FILE * f;
 int t; // для трассировки
 int std; // режим вывода
+int eight; // вывод восьмеричного кода
 byte mem[64 * 1024];
 word reg[8];
 /*
@@ -96,6 +108,7 @@ void f_mem_dump(adr start, word n, char* s);
 void f_mem_dump_1(adr start, word n, char* s);
 vozvr take(word ad_mode, word regi, word B);
 word read(adr a, word B);
+nom nom_flags(char * str);
 
 typedef struct func{
     word msk; // mask

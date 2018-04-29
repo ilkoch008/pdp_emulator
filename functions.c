@@ -2,11 +2,8 @@
 // Created by Ilya on 31.03.2018.
 //
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <assert.h>
-#include <string.h>
 #include "variables.h"
+
 
 void print_all() {
     fprintf(f, "\n------------ print all ------------\n");
@@ -14,14 +11,6 @@ void print_all() {
     fprintf(f, "r1=%06o r3=%06o r5=%06o pc=%06o\n", reg[1], reg[3], reg[5], reg[7]);
     fprintf(f, "N= %06o Z= %06o V= %06o C= %06o\n", N, Z, V, C);
     fprintf(f, "-----------------------------------\n");
-}
-
-void print_all_std() {
-    printf("\n------------ print all ------------\n");
-    printf("r0=%06o r2=%06o r4=%06o sp=%06o\n", reg[0], reg[2], reg[4], reg[6]);
-    printf("r1=%06o r3=%06o r5=%06o pc=%06o\n", reg[1], reg[3], reg[5], reg[7]);
-    printf("N= %06o Z= %06o V= %06o C= %06o\n", N, Z, V, C);
-    printf("-----------------------------------\n");
 }
 
 byte b_read(adr a) {
@@ -36,12 +25,8 @@ void b_write(adr a, byte val) {
         if (a == 0177566) {
             if (t) {
                 fprintf(f, " ---------------> %c", odata);
-                if(std)
-                    printf(" ---------------> %c", odata);
             } else {
                 fprintf(f, "%c", odata);
-                if(std)
-                    printf("%c", odata);
             }
         }
     }
@@ -201,19 +186,11 @@ int do_command(word comm) {
     if (save == 0) {
         if(t) {
             fprintf(f, "HALT \n");
-            if(std)
-                printf("HALT \n");
         }
         fprintf(f, "\n--------------- halted ---------------\n");
         fprintf(f, "r0=%06o r2=%06o r4=%06o sp=%06o\n", reg[0], reg[2], reg[4], reg[6]);
         fprintf(f, "r1=%06o r3=%06o r5=%06o pc=%06o\n", reg[1], reg[3], reg[5], reg[7]);
         fprintf(f, "N= %06o Z= %06o V= %06o C= %06o\n", N, Z, V, C);
-        if(std){
-            printf("\n--------------- halted ---------------\n");
-            printf("r0=%06o r2=%06o r4=%06o sp=%06o\n", reg[0], reg[2], reg[4], reg[6]);
-            printf("r1=%06o r3=%06o r5=%06o pc=%06o\n", reg[1], reg[3], reg[5], reg[7]);
-            printf("N= %06o Z= %06o V= %06o C= %06o\n", N, Z, V, C);
-        }
         return 1;
     }
     word BB;
@@ -235,8 +212,6 @@ int do_command(word comm) {
 int sob(command com){
     if(t) {
         fprintf(f, "SOB ");
-        if(std)
-            printf("SOB ");
     }
     reg[com.reg1]--;
     if(reg[com.reg1] > 0)
@@ -247,14 +222,10 @@ int sob(command com){
 int mov(command com){
     if (t) {
         fprintf(f, "MOV");
-        if(std)
-            printf("MOV");
     }
     if (com.B == 0) {
         if (t) {
             fprintf(f, " ");
-            if(std)
-                printf(" ");
         }
         SRC = take(com.pc_mode_src, com.reg1, com.B);
         DST = take(com.pc_mode_dst, com.reg2, com.B);
@@ -266,8 +237,6 @@ int mov(command com){
     } else {
         if (t) {
             fprintf(f, "B ");
-            if(std)
-                printf("B ");
         }
         SRC = take(com.pc_mode_src, com.reg1, com.B);
         DST = take(com.pc_mode_dst, com.reg2, com.B);
@@ -284,8 +253,6 @@ int add(command com){
         return 1;
     if(t) {
         fprintf(f, "ADD ");
-        if(std)
-            printf("ADD ");
     }
     SRC = take(com.pc_mode_src, com.reg1, com.B);
     DST = take(com.pc_mode_dst, com.reg2, com.B);
@@ -306,8 +273,6 @@ int tst(command com){
     if(com.B){ // TSTB
         if(t) {
             fprintf(f, "TSTB ");
-            if(std)
-                printf("TSTB ");
         }
         DST = take(com.pc_mode_dst, com.reg2, com.B);
         xx.uby = (byte)DST.val;
@@ -317,8 +282,6 @@ int tst(command com){
     } else { // TST
         if (t) {
             fprintf(f, "TST ");
-            if(std)
-                printf("TST ");
         }
         DST = take(com.pc_mode_dst, com.reg2, com.B);
         yy.ui = DST.val;
@@ -333,8 +296,6 @@ int tst(command com){
 int br(command com){
     if(t) {
         fprintf(f, "BR ");
-        if(std)
-            printf("BR ");
     }
     xx.uby = com.offset;
     reg[7] += 2 * xx.sby;
@@ -344,8 +305,6 @@ int br(command com){
 int beq(command com){
     if(t) {
         fprintf(f, "BEQ ");
-        if(std)
-            printf("BEQ ");
     }
     if(Z == 1) {
         xx.uby = com.offset;
@@ -358,8 +317,6 @@ int bpl(command com) {
     if (N == 0 && com.B == 1) {
         if(t) {
             fprintf(f, "BPL ");
-            if(std)
-                printf("BPL ");
         }
         xx.uby = com.offset;
         reg[7] += 2 * xx.sby;
@@ -367,8 +324,6 @@ int bpl(command com) {
     } else if (N == 1 && com.B == 1) {
         if(t) {
             fprintf(f, "BPL ");
-            if(std)
-                printf("BPL ");
         }
         return 0;
     } else {
@@ -379,8 +334,6 @@ int bpl(command com) {
 int jsr(command com){
     if(t) {
         fprintf(f, "JSR ");
-        if(std)
-            printf("JSR ");
     }
     DST = take(com.pc_mode_dst, com.reg2, com.B);
     w_write(reg[6], reg[com.opcode10_6]);
@@ -393,8 +346,6 @@ int jsr(command com){
 int rts(command com){
     if(t) {
         fprintf(f, "RTS ");
-        if(std)
-            printf("RTS ");
     }
     dst = (word)(com.offset - (1 << 7));
     reg[7] = reg[dst];
@@ -406,8 +357,6 @@ int rts(command com){
 int nothing(command com){
     if(t) {
         fprintf(f, "Ha! loh, net tut takoy function\n ");
-        if (std)
-            printf("Ha! loh, net tut takoy function\n");
     }
     return 0;
 }
@@ -415,8 +364,6 @@ int nothing(command com){
 int clr(command com){
     if(t) {
         fprintf(f, "CLR ");
-        if(std)
-            printf("CLR ");
     }
     DST = take(com.pc_mode_dst, com.reg2, com.B);
     N = 0; Z = 1; V = 0; C = 0;
@@ -427,8 +374,6 @@ int clr(command com){
 int mul(command com){
     if(t) {
         fprintf(f, "MUL ");
-        if(std)
-            printf("MUL ");
     }
     DST = take(com.pc_mode_dst, com.reg2, com.B);
     SRC = take(com.opcode11_9, com.reg1, com.B);
@@ -457,13 +402,6 @@ int dec(command com){
             fprintf(f, "B ");
         else
             fprintf(f, " ");
-        if(std){
-            printf("DEC");
-            if(com.B)
-                printf("B ");
-            else
-                printf(" ");
-        }
     }
     DST = take(com.pc_mode_dst, com.reg2, com.B);
     DST.val--;
@@ -482,13 +420,6 @@ int inc(command com){
             fprintf(f, "B ");
         else
             fprintf(f, " ");
-        if(std){
-            printf("INC");
-            if(com.B)
-                printf("B ");
-            else
-                printf(" ");
-        }
     }
     DST = take(com.pc_mode_dst, com.reg2, com.B);
     DST.val++;
@@ -502,8 +433,6 @@ int inc(command com){
 int bne(command com){
     if(t) {
         fprintf(f, "BNE ");
-        if(std)
-            printf("BNE ");
     }
     if(Z == 0) {
         xx.uby = com.offset;
@@ -515,8 +444,6 @@ int bne(command com){
 int d_div(command com){
     if(t){
         fprintf(f, "DIV ");
-        if(std)
-            printf("DIV ");
     }
     DST = take(com.pc_mode_dst, com.reg2, com.B);
     yy.ui = DST.val;
@@ -542,12 +469,9 @@ int d_div(command com){
         reg[com.reg1+1] = (word)(numer.si % yy.si);
     } else {
         short int save;
-//        save = yy.si;
         zz.ui = reg[com.reg1];
         yy.si = zz.si / yy.si;
         reg[com.reg1] = yy.ui;
-//        yy.si = zz.si % save;
-//        reg[com.reg1] = yy.ui;
         return 0;
     }
     DIV_SKIP:
@@ -557,8 +481,6 @@ int d_div(command com){
 int sub(command com){
     if(t) {
         fprintf(f, "SUB ");
-        if(std)
-            printf("SUB ");
     }
     SRC = take(com.pc_mode_src, com.reg1, com.B);
     DST = take(com.pc_mode_dst, com.reg2, com.B);
@@ -574,13 +496,9 @@ int sub(command com){
 int cmp(command com){
     if(t && com.B) {
         fprintf(f, "CMPB ");
-        if(std)
-            printf("CMPB ");
     }
     else if(t) {
         fprintf(f, "CMP ");
-        if(std)
-            printf("CMP ");
     }
     SRC = take(com.pc_mode_src, com.reg1, com.B);
     yy.ui = SRC.val;
@@ -596,8 +514,6 @@ int cmp(command com){
 int jmp(command com){
     if(t) {
         fprintf(f, "JMP ");
-        if(std)
-            printf("JMP ");
     }
     word ad_mode, re;
     com.offset = (unsigned char)(com.offset - (1 << 6));
@@ -611,13 +527,9 @@ int jmp(command com){
 int asr(command com){
     if(t && com.B){
         fprintf(f, "ASRB ");
-        if(std)
-            printf("ASRB ");
     }
     else if(t){
         fprintf(f, "ASR ");
-        if(std)
-            printf("ASR ");
     }
     DST = take(com.pc_mode_dst, com.reg2, com.B);
     if(com.B){
@@ -645,13 +557,9 @@ int asr(command com){
 int bic(command com){
     if(t && com.B){
         fprintf(f, "BICB ");
-        if(std)
-            printf("BICB ");
     }
     else if(t){
         fprintf(f, "BIC ");
-        if(std)
-            printf("BIC ");
     }
     SRC = take(com.pc_mode_src, com.reg1, com.B);
     DST = take(com.pc_mode_dst, com.reg2, com.B);
