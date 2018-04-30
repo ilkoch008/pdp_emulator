@@ -241,9 +241,12 @@ int mov(command com){
         SRC = take(com.pc_mode_src, com.reg1, com.B);
         DST = take(com.pc_mode_dst, com.reg2, com.B);
         xx.uby = (byte)SRC.val;
-        src = (word)xx.sby;
-        Z = src == 0 ? 1 : 0;
-        b_write(DST.adr, (byte)SRC.val);
+        yy.si = xx.sby;
+        Z = yy.si == 0 ? 1 : 0;
+        if(DST.adr > 8)
+            b_write(DST.adr, (byte)SRC.val);
+        else
+            w_write(DST.adr, yy.ui);
     }
     return 0;
 }
